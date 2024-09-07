@@ -1,4 +1,4 @@
-package com.kb.zipkeem;
+package com.kb.zipkim;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
