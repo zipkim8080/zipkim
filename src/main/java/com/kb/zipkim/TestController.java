@@ -35,6 +35,7 @@ public class TestController {
         responseData.put("serverPort", serverPort);
         responseData.put("env", env);
         responseData.put("serverAddress", serverAddress);
+        responseData.put("name", "kb_8080");
         return ResponseEntity.ok(responseData);
     }
 
