@@ -25,7 +25,7 @@ public class TestController {
 
     @GetMapping("/")
     public String test() {
-        return "집킴이 API SERVER입니다.";
+        return "김주엽 API SERVER입니다.";
     }
 
     @GetMapping("/hc")
