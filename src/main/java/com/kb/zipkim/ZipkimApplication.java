@@ -1,4 +1,4 @@
-package com.kb.zipkeem;
+package com.kb.zipkim;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
