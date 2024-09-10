@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   datasource:
     url:
     username:
@@ -10,6 +12,11 @@ spring:
     properties:
       hibernate:
     show-sql: true
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
 
 server:
   env: blue
