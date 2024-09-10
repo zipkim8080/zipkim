@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF 파일 업로드</title>
+</head>
+<body>
+<h2>PDF 파일 업로드</h2>
+<!--/uplad-property-doc에서 처리 -->
+<form id="uploadForm" action="/upload-property-doc" method="POST" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" accept="application/pdf"/>
+    <button type="submit">업로드</button>
+</form>
+</body>
+</html>

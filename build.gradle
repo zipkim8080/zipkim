@@ -47,6 +47,12 @@ dependencies {
 
     //test
     testRuntimeOnly 'com.h2database:h2'
+
+    // org.apache.pdfbox
+    implementation 'org.apache.pdfbox:pdfbox:2.0.29'
+
+    //org.json
+    implementation 'org.json:json:20210307'
 }
 
 dependencyManagement {
