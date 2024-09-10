@@ -3,12 +3,13 @@ spring:
     url:
     username:
     password:
-    driver-class-name:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto:
     properties:
       hibernate:
+    show-sql: true
 
 server:
   env: blue
@@ -16,3 +17,6 @@ server:
   serverAddress: localhost
 
 serverName: local_server
+
+file:
+  dir: /home/ubuntu/images/
