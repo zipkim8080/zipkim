@@ -17,3 +17,6 @@ server:
   serverAddress: localhost
 
 serverName: local_server
+
+file:
+  dir: /home/ubuntu/images/
