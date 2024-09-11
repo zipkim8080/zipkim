@@ -27,3 +27,10 @@ serverName: local_server
 
 file:
   dir: ""
+
+---
+spring:
+  data:
+    redis:
+      host: test-redis
+      port: 6380
