@@ -1,4 +1,4 @@
-package com.kb.zipkim.domain.register.register;
+package com.kb.zipkim.domain.register;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

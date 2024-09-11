@@ -3,10 +3,13 @@ package com.kb.zipkim.domain.prop.dto;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class PropRegisterForm {
+
+    private Long brokerId;
 
     private String zipcode;
 
@@ -35,7 +38,7 @@ public class PropRegisterForm {
 
     private String porch; //현관타입
 
-    List<MultipartFile> images;
+    List<MultipartFile> images = new ArrayList<>();
 
     private Integer floor; //현재층
 
@@ -50,6 +53,9 @@ public class PropRegisterForm {
     private String recentDeposit;
 
     private String hugNumber;
+
+    private Boolean hasSchool;
+    private Boolean hasConvenience;
 
 //  등기관련
 
