@@ -36,6 +36,7 @@ public class TestController {
         responseData.put("env", env);
         responseData.put("serverAddress", serverAddress);
         responseData.put("name", "kb_8080");
+        // 수정 테스트
         return ResponseEntity.ok(responseData);
     }
 
