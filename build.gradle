@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
     // security, oauth
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
