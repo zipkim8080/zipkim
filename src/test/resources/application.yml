@@ -26,4 +26,4 @@ server:
 serverName: local_server
 
 file:
-  dir: /home/ubuntu/images/
+  dir: ""
