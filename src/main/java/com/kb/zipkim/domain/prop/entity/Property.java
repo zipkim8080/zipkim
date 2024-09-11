@@ -3,6 +3,7 @@ package com.kb.zipkim.domain.prop.entity;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.Registered;
+import com.kb.zipkim.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Property {
+public class Property extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
