@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   datasource:
     url:
     username:
@@ -6,9 +8,15 @@ spring:
     driver-class-name:
   jpa:
     hibernate:
-      ddl-auto:
+      ddl-auto: create
     properties:
       hibernate:
+    show-sql: true
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
 
 server:
   env: blue
@@ -16,3 +24,6 @@ server:
   serverAddress: localhost
 
 serverName: local_server
+
+file:
+  dir: ""
