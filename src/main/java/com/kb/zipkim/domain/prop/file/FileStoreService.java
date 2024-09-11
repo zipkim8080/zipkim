@@ -4,16 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class FileStoreService {
-    @Value("${file.dir}")
-    private String fileDir;
+    abstract public String getFullPath(String filename);
 
-    public String getFullPath(String filename) {
-        return fileDir + filename;
-    }
     String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
@@ -24,7 +21,15 @@ public abstract class FileStoreService {
         return originalFilename.substring(pos + 1);
     }
 
-    abstract public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException;
+    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+        List<UploadFile> storeFileResult = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFiles) {
+            if (!multipartFile.isEmpty()) {
+                storeFileResult.add(storeFile(multipartFile));
+            }
+        }
+        return storeFileResult;
+    }
 
     abstract public UploadFile storeFile(MultipartFile multipartFile) throws IOException;
 

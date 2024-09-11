@@ -15,16 +15,15 @@ import java.util.UUID;
 @Profile("local")
 public class FileStoreServicePC extends FileStoreService {
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles)
-            throws IOException {
-        List<UploadFile> storeFileResult = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            if (!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
-            } }
-        return storeFileResult;
+    @Value("${file.dir}")
+    private String fileDir;
+
+    @Override
+    public String getFullPath(String filename) {
+        return fileDir + filename;
     }
 
+    @Override
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException
     {
         if (multipartFile.isEmpty()) {

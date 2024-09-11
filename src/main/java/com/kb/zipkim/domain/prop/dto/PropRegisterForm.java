@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class PropRegisterForm {
 
+    private Long brokerId;
+
     private String zipcode;
 
     private String roadName;
@@ -50,6 +52,9 @@ public class PropRegisterForm {
     private String recentDeposit;
 
     private String hugNumber;
+
+    private Boolean hasSchool;
+    private Boolean hasConvenience;
 
 //  등기관련
 
