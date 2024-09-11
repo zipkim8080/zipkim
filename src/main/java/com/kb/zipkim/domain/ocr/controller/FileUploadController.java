@@ -2,27 +2,19 @@ package com.kb.zipkim.domain.ocr.controller;
 
 import com.kb.zipkim.domain.ocr.service.OCRGeneralAPIDemo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 public class FileUploadController {
 
-    private static final String OCR_API_URL = "https://w7f0k3xqy8.apigw.ntruss.com/custom/v1/34182/5c2100025b16243b0c86dbbcdca87c533fc88d3219a8ed07d3fb9e13b6232286/general";
-    private static final String SECRET_KEY = "emd4a3hsTXpQSG5nRmFob1B1bExCaWhBVUxYWWxuT2U=";
     private final OCRGeneralAPIDemo ocrService;
 
 
@@ -45,7 +37,7 @@ public class FileUploadController {
 
             pdfFile.delete();
 
-            return ResponseEntity.ok("OCR 결과: " + ocrResult);
+            return ResponseEntity.ok(ocrResult);
 
         } catch (Exception e) {
             e.printStackTrace();  // 오류 출력

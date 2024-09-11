@@ -1,0 +1,27 @@
+{
+  "valueType": "ALL",
+  "boundingPoly": {
+    "vertices": [
+      {
+        "x": 38.0,
+        "y": 170.0
+      },
+      {
+        "x": 123.0,
+        "y": 170.0
+      },
+      {
+        "x": 123.0,
+        "y": 195.0
+      },
+      {
+        "x": 38.0,
+        "y": 195.0
+      }
+    ]
+  },
+  "inferText": "순위번호",
+  "inferConfidence": 1.0,
+  "type": "NORMAL",
+  "lineBreak": false
+}

@@ -1,0 +1,78 @@
+{
+  "cellTextLines": [
+    {
+      "boundingPoly": {
+        "vertices": [
+          {
+            "x": 38.0,
+            "y": 170.0
+          },
+          {
+            "x": 123.0,
+            "y": 170.0
+          },
+          {
+            "x": 123.0,
+            "y": 195.0
+          },
+          {
+            "x": 38.0,
+            "y": 195.0
+          }
+        ]
+      },
+      "inferConfidence": 1.0,
+      "cellWords": [
+        {
+          "boundingPoly": {
+            "vertices": [
+              {
+                "x": 38.0,
+                "y": 170.0
+              },
+              {
+                "x": 123.0,
+                "y": 170.0
+              },
+              {
+                "x": 123.0,
+                "y": 195.0
+              },
+              {
+                "x": 38.0,
+                "y": 195.0
+              }
+            ]
+          },
+          "inferText": "순위번호",
+          "inferConfidence": 1.0
+        }
+      ]
+    }
+  ],
+  "boundingPoly": {
+    "vertices": [
+      {
+        "x": 31.0,
+        "y": 155.0
+      },
+      {
+        "x": 132.0,
+        "y": 155.0
+      },
+      {
+        "x": 132.0,
+        "y": 206.0
+      },
+      {
+        "x": 31.0,
+        "y": 206.0
+      }
+    ]
+  },
+  "inferConfidence": 1.0,
+  "rowSpan": 1,
+  "rowIndex": 0,
+  "columnSpan": 1,
+  "columnIndex": 0
+}

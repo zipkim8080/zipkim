@@ -10,12 +10,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class OCRGeneralAPIDemo {
+
+    private final ExtractRelevantData extractRelevantData;
 
     public String processOCR(String imageFile) {
         String apiURL = "https://w7f0k3xqy8.apigw.ntruss.com/custom/v1/34182/5c2100025b16243b0c86dbbcdca87c533fc88d3219a8ed07d3fb9e13b6232286/general";
@@ -40,10 +44,11 @@ public class OCRGeneralAPIDemo {
             json.put("timestamp", System.currentTimeMillis());
             JSONObject image = new JSONObject();
             image.put("format", "pdf");
-            image.put("name", "demo");
+            image.put("name", "demo"); // JSON 이름
             JSONArray images = new JSONArray();
             images.put(image);
             json.put("images", images);
+            json.put("enableTableDetection", true);
             String postParams = json.toString();
 
             con.connect();
@@ -67,6 +72,9 @@ public class OCRGeneralAPIDemo {
             }
             br.close();
 
+//            String finalData = extractRelevantData.extractRelevantData(response.toString());
+//
+//            return finalData;
             return response.toString();
 
         } catch (Exception e) {
