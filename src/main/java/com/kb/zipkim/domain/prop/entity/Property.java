@@ -109,6 +109,9 @@ public class Property {
     }
 
     public void upload(List<UploadFile> images) {
+        for (UploadFile image : images) {
+            image.setProperty(this);
+        }
         this.images = images;
     }
 }
