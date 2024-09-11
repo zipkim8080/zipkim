@@ -1,13 +1,11 @@
 package com.kb.zipkim.domain.prop.repository;
 
 import com.kb.zipkim.domain.prop.entity.Property;
-import com.kb.zipkim.domain.register.register.Registered;
+import com.kb.zipkim.domain.register.Registered;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PropertyRepositoryTest {

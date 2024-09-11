@@ -1,7 +1,8 @@
 package com.kb.zipkim.domain.prop.entity;
 
+import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.file.UploadFile;
-import com.kb.zipkim.domain.register.register.Registered;
+import com.kb.zipkim.domain.register.Registered;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long broker_id; //중개인
+    private Long brokerId; //중개인
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "register_id")
@@ -71,9 +72,43 @@ public class Property {
 
     private String hugNumber;
 
-
+    private Boolean hasSchool;
+    private Boolean hasConvenience;
+    public static Property makeProperty(
+           PropRegisterForm form
+    ) {
+        Property property = new Property();
+        property.brokerId = form.getBrokerId();
+        property.zipcode = form.getZipcode();
+        property.roadName = form.getRoadName();
+        property.bgdCd = form.getBgdCd();
+        property.addressName = form.getAddressName();
+        property.mainAddressNo = form.getMainAddressNo();
+        property.subAddressNo = form.getSubAddressNo();
+        property.longitude = form.getLongitude();
+        property.latitude = form.getLatitude();
+        property.amount = form.getAmount();
+        property.deposit = form.getDeposit();
+        property.roomNo = form.getRoomNo();
+        property.bathNo = form.getBathNo();
+        property.hasEv = form.getHasEv();
+        property.porch = form.getPorch();
+        property.floor = form.getFloor();
+        property.totalFloor = form.getTotalFloor();
+        property.description = form.getDescription();
+        property.parking = form.getParking();
+        property.recentAmount = form.getRecentAmount();
+        property.recentDeposit = form.getRecentDeposit();
+        property.hugNumber = form.getHugNumber();
+        property.hasSchool = form.getHasSchool();
+        property.hasConvenience = form.getHasConvenience();
+        return property;
+    }
     public void register(Registered registered) {
         this.registered = registered;
     }
 
+    public void upload(List<UploadFile> images) {
+        this.images = images;
+    }
 }
