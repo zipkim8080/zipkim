@@ -2,11 +2,10 @@ package com.kb.zipkim.domain.prop.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kb.zipkim.domain.prop.dto.LocationWithRadius;
-import com.kb.zipkim.domain.prop.dto.NearByProp;
+import com.kb.zipkim.domain.prop.dto.NearByComplex;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.dto.RegisterResult;
 import com.kb.zipkim.domain.prop.file.FileStoreService;
-import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.prop.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +32,8 @@ public class PropertyController {
     }
 
     @GetMapping("/api/nearProps")
-    public ResponseEntity<List<NearByProp>> getNearItems(@ModelAttribute LocationWithRadius locationWithRadius) throws JsonProcessingException {
-        List<NearByProp> props = propertyService.findNearProp(locationWithRadius.getLat(), locationWithRadius.getLon(), locationWithRadius.getRadius());
+    public ResponseEntity<List<NearByComplex>> getNearItems(@ModelAttribute LocationWithRadius locationWithRadius) throws JsonProcessingException {
+        List<NearByComplex> props = propertyService.findNearProp(locationWithRadius.getLat(), locationWithRadius.getLon(), locationWithRadius.getRadius());
         return ResponseEntity.ok().body(props);
     }
 }

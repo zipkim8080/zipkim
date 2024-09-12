@@ -5,10 +5,7 @@ import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.Registered;
 import com.kb.zipkim.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,5 +90,9 @@ public class Property extends BaseEntity {
 
     public void belongTo(Complex complex) {
         this.complex = complex;
+        complex.getProperties().add(this);
+        complex.addPropCount();
+        complex.addTotalAmount(amount);
+        complex.addTotalDeposit(deposit);
     }
 }

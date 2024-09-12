@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.util.StringUtils;
 
 import static org.springframework.util.StringUtils.*;
 
@@ -12,13 +11,12 @@ import static org.springframework.util.StringUtils.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NearByProp {
+public class NearByComplex {
+    Long complexId;
 
-    Long id;
+    String currentAverageDeposit;
 
-    String amount;
-
-    String deposit;
+    String currentAverageAmount;
 
     String recentAmount;
 
@@ -29,9 +27,9 @@ public class NearByProp {
     Double recentDepositRatio;
 
     Double distance;
-    public NearByProp(String amount, String deposit,String recentAmount, String recentDeposit,Double distance) {
-        this.amount = amount;
-        this.deposit = deposit;
+    public NearByComplex(String amount, String deposit, String recentAmount, String recentDeposit, Double distance) {
+//        this.amount = amount;
+//        this.deposit = deposit;
         this.recentAmount = recentAmount;
         this.recentDeposit = recentDeposit;
 

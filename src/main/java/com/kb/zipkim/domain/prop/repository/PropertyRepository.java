@@ -8,4 +8,5 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     List<Property> findByBrokerId(Long brokerId);
+    List<Property> findByComplexId(Long complexId);
 }
