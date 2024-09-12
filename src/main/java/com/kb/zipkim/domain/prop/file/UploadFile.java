@@ -1,5 +1,6 @@
 package com.kb.zipkim.domain.prop.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kb.zipkim.domain.prop.entity.Property;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class UploadFile {
     @Column(name = "file_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prop_id")
     private Property property;
