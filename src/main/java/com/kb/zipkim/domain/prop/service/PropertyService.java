@@ -2,7 +2,7 @@ package com.kb.zipkim.domain.prop.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kb.zipkim.domain.prop.dto.NearByProp;
+import com.kb.zipkim.domain.prop.dto.NearByComplex;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.dto.RegisterResult;
 import com.kb.zipkim.domain.prop.entity.Complex;
@@ -54,8 +54,11 @@ public class PropertyService {
         Complex complex = complexRepository.findByDongAndMainAddressNoAndSubAddressNo(form.getDong(), form.getMainAddressNo(), form.getSubAddressNo())
                 .orElseGet(()->{
                     Complex newComplex = Complex.makeComplex(form);
+                    System.out.println("hihihihihihi");
                     return complexRepository.save(newComplex);
                 });
+        System.out.println(complex.getTotalPropAmount()+ " "+ complex.getTotalPropDeposit()+ " "+ complex.getPropsCount()+ " "+ complex.getZipcode());
+
         property.belongTo(complex);
         propertyRepository.save(property);
         RegisterResult result = new RegisterResult();
@@ -66,7 +69,7 @@ public class PropertyService {
         return result;
     }
 
-    public List<NearByProp> findNearProp(double latitude, double longitude, double radius) throws JsonProcessingException {
+    public List<NearByComplex> findNearProp(double latitude, double longitude, double radius) throws JsonProcessingException {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         GeoReference<String> reference = GeoReference.fromCoordinate(new Point(longitude, latitude));
         Distance distance = new Distance(radius, RedisGeoCommands.DistanceUnit.KILOMETERS);
@@ -77,13 +80,13 @@ public class PropertyService {
                 .sortAscending();
 
         GeoResults<RedisGeoCommands.GeoLocation<String>> results = geoOperations.search(KEY, reference, distance, args);
-        List<NearByProp> props = new ArrayList<>();
+        List<NearByComplex> props = new ArrayList<>();
 
         if(results == null) return props; //주변값이 없으면 빈 배열반환
 
         for (GeoResult<RedisGeoCommands.GeoLocation<String>> result : results) {
             RedisGeoCommands.GeoLocation<String> location = result.getContent();
-            NearByProp prop = objectMapper.readValue(location.getName(), NearByProp.class);
+            NearByComplex prop = objectMapper.readValue(location.getName(), NearByComplex.class);
             prop.setDistance(result.getDistance().getValue());
             props.add(prop);
         }

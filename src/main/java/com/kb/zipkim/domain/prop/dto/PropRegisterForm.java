@@ -1,5 +1,6 @@
 package com.kb.zipkim.domain.prop.dto;
 
+import jakarta.annotation.Nonnull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +11,8 @@ import java.util.List;
 public class PropRegisterForm {
 
     private Long brokerId;
+
+    private String type;
 
     private String zipcode;
 
@@ -58,6 +61,8 @@ public class PropRegisterForm {
 
     private Boolean hasSchool;
     private Boolean hasConvenience;
+
+    private String complexName;
 
 //  등기관련
 
