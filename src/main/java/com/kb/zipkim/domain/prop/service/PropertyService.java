@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.zipkim.domain.prop.dto.NearByProp;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.dto.RegisterResult;
+import com.kb.zipkim.domain.prop.entity.Complex;
 import com.kb.zipkim.domain.prop.entity.Property;
 import com.kb.zipkim.domain.prop.file.FileStoreService;
 import com.kb.zipkim.domain.prop.file.UploadFile;
+import com.kb.zipkim.domain.prop.repository.ComplexRepository;
 import com.kb.zipkim.domain.prop.repository.PropertyRepository;
 import com.kb.zipkim.domain.register.Registered;
 import jakarta.transaction.Transactional;
@@ -32,6 +34,7 @@ public class PropertyService {
 
     private static final String KEY = "prop";
     private final PropertyRepository propertyRepository;
+    private final ComplexRepository complexRepository;
     private final FileStoreService fileStoreService;
     private final ObjectMapper objectMapper;
 
@@ -47,6 +50,13 @@ public class PropertyService {
                 .build();
         property.register(registered);
         property.upload(uploadFiles);
+
+        Complex complex = complexRepository.findByDongAndMainAddressNoAndSubAddressNo(form.getDong(), form.getMainAddressNo(), form.getSubAddressNo())
+                .orElseGet(()->{
+                    Complex newComplex = Complex.makeComplex(form);
+                    return complexRepository.save(newComplex);
+                });
+        property.belongTo(complex);
         propertyRepository.save(property);
         RegisterResult result = new RegisterResult();
         for (UploadFile uploadFile : uploadFiles) {
