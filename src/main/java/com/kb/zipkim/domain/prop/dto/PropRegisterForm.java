@@ -16,8 +16,6 @@ public class PropRegisterForm {
 
     private String zipcode;
 
-    private String dong;
-
     private String roadName;
 
     private String bgdCd;

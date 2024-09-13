@@ -26,8 +26,6 @@ public class Complex {
 
     private String zipcode;
 
-    private String dong;
-
     private String roadName;
 
     private String bgdCd;
@@ -59,7 +57,6 @@ public class Complex {
             PropRegisterForm form
     ) {
         Complex complex = new Complex();
-        complex.dong = form.getDong();
         complex.type = form.getType();
         complex.complexName = form.getComplexName();
         complex.zipcode = form.getZipcode();
