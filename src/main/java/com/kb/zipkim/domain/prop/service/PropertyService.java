@@ -54,11 +54,9 @@ public class PropertyService {
         Complex complex = complexRepository.findByDongAndMainAddressNoAndSubAddressNo(form.getDong(), form.getMainAddressNo(), form.getSubAddressNo())
                 .orElseGet(()->{
                     Complex newComplex = Complex.makeComplex(form);
-                    System.out.println("hihihihihihi");
                     return complexRepository.save(newComplex);
                 });
-        System.out.println(complex.getTotalPropAmount()+ " "+ complex.getTotalPropDeposit()+ " "+ complex.getPropsCount()+ " "+ complex.getZipcode());
-
+        complex.updateRecentAmountAndDeposit(form.getRecentAmount(), form.getRecentDeposit());
         property.belongTo(complex);
         propertyRepository.save(property);
         RegisterResult result = new RegisterResult();
@@ -80,17 +78,17 @@ public class PropertyService {
                 .sortAscending();
 
         GeoResults<RedisGeoCommands.GeoLocation<String>> results = geoOperations.search(KEY, reference, distance, args);
-        List<NearByComplex> props = new ArrayList<>();
+        List<NearByComplex> complexes = new ArrayList<>();
 
-        if(results == null) return props; //주변값이 없으면 빈 배열반환
+        if(results == null) return complexes; //주변값이 없으면 빈 배열반환
 
         for (GeoResult<RedisGeoCommands.GeoLocation<String>> result : results) {
             RedisGeoCommands.GeoLocation<String> location = result.getContent();
-            NearByComplex prop = objectMapper.readValue(location.getName(), NearByComplex.class);
-            prop.setDistance(result.getDistance().getValue());
-            props.add(prop);
+            NearByComplex complex = objectMapper.readValue(location.getName(), NearByComplex.class);
+            complex.setDistance(result.getDistance().getValue());
+            complexes.add(complex);
         }
-        return props;
+        return complexes;
     }
 
 }

@@ -30,9 +30,9 @@ public class Property extends BaseEntity {
     @JoinColumn(name = "complex_id")
     private Complex complex;
 
-    private String amount; //매매가
+    private Double amount; //매매가
 
-    private String deposit; //전세가
+    private Double deposit; //전세가
 
     private String roomNo;
 

@@ -28,12 +28,12 @@ public class PropRegisterForm {
 
     private String subAddressNo;
 
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
 
-    private String amount; //매매가
+    private Double amount; //매매가
 
-    private String deposit; //전세가
+    private Double deposit; //전세가
 
     private String roomNo;
 
@@ -53,9 +53,9 @@ public class PropRegisterForm {
 
     private Boolean parking; //주차가능여부
 
-    private String recentAmount;
+    private Double recentAmount;
 
-    private String recentDeposit;
+    private Double recentDeposit;
 
     private String hugNumber;
 

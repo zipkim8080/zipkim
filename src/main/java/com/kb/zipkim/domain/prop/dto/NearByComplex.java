@@ -1,9 +1,7 @@
 package com.kb.zipkim.domain.prop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import static org.springframework.util.StringUtils.*;
 
@@ -11,35 +9,33 @@ import static org.springframework.util.StringUtils.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class NearByComplex {
     Long complexId;
 
-    String currentAverageDeposit;
+    Double currentAverageDeposit;
 
-    String currentAverageAmount;
+    Double currentAverageAmount;
 
-    String recentAmount;
+    Double recentAmount;
 
-    String recentDeposit;
+    Double recentDeposit;
 
-    Double depositRatio;
+    Double curDepositRatio;
 
     Double recentDepositRatio;
 
+    @JsonIgnore
     Double distance;
-    public NearByComplex(String amount, String deposit, String recentAmount, String recentDeposit, Double distance) {
-//        this.amount = amount;
-//        this.deposit = deposit;
+
+    public NearByComplex(Long complexId, Double currentAverageDeposit, Double currentAverageAmount, Double recentAmount, Double recentDeposit, Double curDepositRatio, Double recentDepositRatio) {
+        this.complexId = complexId;
+        this.currentAverageDeposit = currentAverageDeposit;
+        this.currentAverageAmount = currentAverageAmount;
         this.recentAmount = recentAmount;
         this.recentDeposit = recentDeposit;
-
-        this.depositRatio = Double.parseDouble(deposit) / Double.parseDouble(amount);
-
-        if (!hasText(recentAmount) || !hasText(recentDeposit) || Double.parseDouble(recentAmount) <= 0) {
-            this.recentDepositRatio = 0.0;
-        }
-        this.distance = distance;
+        this.curDepositRatio = curDepositRatio;
+        this.recentDepositRatio = recentDepositRatio;
     }
-
 
 }
