@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ComplexRepository extends JpaRepository<Complex, Long> {
 
-    Optional<Complex> findByDongAndMainAddressNoAndSubAddressNo(String dong, String mainAddressNo, String subAddressNo);
+    Optional<Complex> findByBgdCdAndMainAddressNoAndSubAddressNo(String bgdCd, String mainAddressNo, String subAddressNo);
 }

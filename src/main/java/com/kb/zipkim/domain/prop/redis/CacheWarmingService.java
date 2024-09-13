@@ -36,7 +36,7 @@ public class CacheWarmingService {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
 
         for (Complex complex : all) {
-            NearByComplex nearByComplex = new NearByComplex(complex.getId(),complex.getType(), complex.calcAvrDeposit(), complex.calcAvrAmount(), complex.getRecentAmount(), complex.getRecentDeposit(), complex.calcCurrentDepositRatio(), complex.calcRecentDepositRatio());
+            NearByComplex nearByComplex = new NearByComplex(complex.getId(),complex.getType(), complex.calcAvrDeposit(), complex.calcAvrAmount(), complex.getRecentAmount(), complex.getRecentDeposit(), complex.calcCurrentDepositRatio(), complex.calcRecentDepositRatio(), complex.getLongitude(),complex.getLatitude());
             Point point = new Point(complex.getLongitude(), complex.getLatitude());
             geoOperations.add(KEY, point, objectMapper.writeValueAsString(nearByComplex));
         }

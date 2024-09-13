@@ -1,6 +1,7 @@
 package com.kb.zipkim.domain.prop.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import static org.springframework.util.StringUtils.*;
@@ -9,7 +10,6 @@ import static org.springframework.util.StringUtils.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class NearByComplex {
     Long complexId;
 
@@ -26,10 +26,13 @@ public class NearByComplex {
     Double curDepositRatio;
     Double recentDepositRatio;
 
-    @JsonIgnore
+    Double longitude;
+
+    Double latitude;
+
     Double distance;
 
-    public NearByComplex(Long complexId,String type, Double currentAverageDeposit, Double currentAverageAmount, Double recentAmount, Double recentDeposit, Double curDepositRatio, Double recentDepositRatio) {
+    public NearByComplex(Long complexId,String type, Double currentAverageDeposit, Double currentAverageAmount, Double recentAmount, Double recentDeposit, Double curDepositRatio, Double recentDepositRatio, Double longitude, Double latitude) {
         this.complexId = complexId;
         this.type = type;
         this.currentAverageDeposit = currentAverageDeposit;
@@ -38,6 +41,8 @@ public class NearByComplex {
         this.recentDeposit = recentDeposit;
         this.curDepositRatio = curDepositRatio;
         this.recentDepositRatio = recentDepositRatio;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
 }

@@ -51,7 +51,7 @@ public class PropertyService {
         property.register(registered);
         property.upload(uploadFiles);
 
-        Complex complex = complexRepository.findByDongAndMainAddressNoAndSubAddressNo(form.getDong(), form.getMainAddressNo(), form.getSubAddressNo())
+        Complex complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
                 .orElseGet(()->{
                     Complex newComplex = Complex.makeComplex(form);
                     return complexRepository.save(newComplex);
@@ -67,7 +67,7 @@ public class PropertyService {
         return result;
     }
 
-    public List<NearByComplex> findNearProp(double latitude, double longitude, double radius) throws JsonProcessingException {
+    public List<NearByComplex> findNearProp(String type, double latitude, double longitude, double radius) throws JsonProcessingException {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         GeoReference<String> reference = GeoReference.fromCoordinate(new Point(longitude, latitude));
         Distance distance = new Distance(radius, RedisGeoCommands.DistanceUnit.KILOMETERS);
@@ -85,6 +85,9 @@ public class PropertyService {
         for (GeoResult<RedisGeoCommands.GeoLocation<String>> result : results) {
             RedisGeoCommands.GeoLocation<String> location = result.getContent();
             NearByComplex complex = objectMapper.readValue(location.getName(), NearByComplex.class);
+            if (!complex.getType().equals(type) ) {
+                continue;
+            }
             complex.setDistance(result.getDistance().getValue());
             complexes.add(complex);
         }
