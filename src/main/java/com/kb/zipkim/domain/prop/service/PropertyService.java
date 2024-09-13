@@ -32,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PropertyService {
 
-    private static final String KEY = "prop";
+    private static final String KEY = "complexes";
     private final PropertyRepository propertyRepository;
     private final ComplexRepository complexRepository;
     private final FileStoreService fileStoreService;
