@@ -5,10 +5,7 @@ import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.Registered;
 import com.kb.zipkim.global.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +26,9 @@ public class Property extends BaseEntity {
     @JoinColumn(name = "register_id")
     private Registered registered;
 
-    private String zipcode;
-
-    private String roadName;
-
-    private String bgdCd;
-
-    private String addressName;
-
-    private String mainAddressNo;
-
-    private String subAddressNo;
-
-    private String longitude;
-    private String latitude;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "complex_id")
+    private Complex complex;
 
     private String amount; //매매가
 
@@ -67,10 +53,6 @@ public class Property extends BaseEntity {
 
     private Boolean parking; //주차가능여부
 
-    private String recentAmount;
-
-    private String recentDeposit;
-
     private String hugNumber;
 
     private Boolean hasSchool;
@@ -80,14 +62,6 @@ public class Property extends BaseEntity {
     ) {
         Property property = new Property();
         property.brokerId = form.getBrokerId();
-        property.zipcode = form.getZipcode();
-        property.roadName = form.getRoadName();
-        property.bgdCd = form.getBgdCd();
-        property.addressName = form.getAddressName();
-        property.mainAddressNo = form.getMainAddressNo();
-        property.subAddressNo = form.getSubAddressNo();
-        property.longitude = form.getLongitude();
-        property.latitude = form.getLatitude();
         property.amount = form.getAmount();
         property.deposit = form.getDeposit();
         property.roomNo = form.getRoomNo();
@@ -98,8 +72,6 @@ public class Property extends BaseEntity {
         property.totalFloor = form.getTotalFloor();
         property.description = form.getDescription();
         property.parking = form.getParking();
-        property.recentAmount = form.getRecentAmount();
-        property.recentDeposit = form.getRecentDeposit();
         property.hugNumber = form.getHugNumber();
         property.hasSchool = form.getHasSchool();
         property.hasConvenience = form.getHasConvenience();
@@ -114,5 +86,13 @@ public class Property extends BaseEntity {
             image.setProperty(this);
         }
         this.images = images;
+    }
+
+    public void belongTo(Complex complex) {
+        this.complex = complex;
+        complex.getProperties().add(this);
+        complex.addPropCount();
+        complex.addTotalAmount(amount);
+        complex.addTotalDeposit(deposit);
     }
 }
