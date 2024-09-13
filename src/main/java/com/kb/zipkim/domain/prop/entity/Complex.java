@@ -38,13 +38,13 @@ public class Complex {
 
     private String subAddressNo;
 
-    private String longitude;
+    private Double longitude;
 
-    private String latitude;
+    private Double latitude;
 
-    private String recentAmount;
+    private Double recentAmount;
 
-    private String recentDeposit;
+    private Double recentDeposit;
 
     private Double totalPropAmount;
 
@@ -82,11 +82,34 @@ public class Complex {
         this.propsCount++;
     }
 
-    public void addTotalAmount(String amount) {
-        this.totalPropAmount += Double.parseDouble(amount);
+    public void addTotalAmount(Double amount) {
+        this.totalPropAmount += amount;
     }
 
-    public void addTotalDeposit(String deposit) {
-        this.totalPropDeposit += Double.parseDouble(deposit);
+    public void addTotalDeposit(Double deposit) {
+        this.totalPropDeposit += deposit;
+    }
+
+    public void updateRecentAmountAndDeposit(Double amount, Double deposit) {
+        this.recentAmount = amount;
+        this.recentDeposit = deposit;
+    }
+
+    public Double calcAvrAmount() {
+        return totalPropAmount / propsCount;
+    }
+
+    public Double calcAvrDeposit() {
+        return totalPropDeposit / propsCount;
+    }
+    public Double calcCurrentDepositRatio() {
+        return calcAvrDeposit() / calcAvrAmount();
+    }
+
+    public Double calcRecentDepositRatio() {
+        if (recentAmount == 0.0) {
+            return 0.0;
+        }
+        return recentDeposit / recentAmount;
     }
 }
