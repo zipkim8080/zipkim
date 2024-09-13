@@ -23,9 +23,8 @@ import java.util.List;
 @Profile("prod")
 public class CacheWarmingService {
 
-    private static final String KEY = "props";
+    private static final String KEY = "complexes";
     private final ComplexRepository complexRepository;
-    private final PropertyRepository propertyRepository;
     private final ObjectMapper objectMapper;
 
     private final RedisTemplate<String, String> redisTemplate;
@@ -37,7 +36,7 @@ public class CacheWarmingService {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
 
         for (Complex complex : all) {
-            NearByComplex nearByComplex = new NearByComplex(complex.getId(), complex.calcAvrDeposit(), complex.calcAvrAmount(), complex.getRecentAmount(), complex.getRecentDeposit(), complex.calcCurrentDepositRatio(), complex.calcRecentDepositRatio());
+            NearByComplex nearByComplex = new NearByComplex(complex.getId(),complex.getType(), complex.calcAvrDeposit(), complex.calcAvrAmount(), complex.getRecentAmount(), complex.getRecentDeposit(), complex.calcCurrentDepositRatio(), complex.calcRecentDepositRatio());
             Point point = new Point(complex.getLongitude(), complex.getLatitude());
             geoOperations.add(KEY, point, objectMapper.writeValueAsString(nearByComplex));
         }
