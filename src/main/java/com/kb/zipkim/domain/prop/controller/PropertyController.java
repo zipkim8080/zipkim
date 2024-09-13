@@ -1,6 +1,7 @@
 package com.kb.zipkim.domain.prop.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kb.zipkim.domain.prop.ComplexListResponse;
 import com.kb.zipkim.domain.prop.dto.LocationWithRadius;
 import com.kb.zipkim.domain.prop.dto.NearByComplex;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
@@ -29,8 +30,8 @@ public class PropertyController {
     }
 
     @GetMapping("/api/map/{type}")
-    public ResponseEntity<List<NearByComplex>> getNearComplexes(@PathVariable String type, @ModelAttribute LocationWithRadius locationWithRadius) throws JsonProcessingException {
-        List<NearByComplex> props = propertyService.findNearProp(type, locationWithRadius.getLat(), locationWithRadius.getLon(), locationWithRadius.getRadius());
-        return ResponseEntity.ok().body(props);
+    public ComplexListResponse<List<NearByComplex>> getNearComplexes(@PathVariable String type, @ModelAttribute LocationWithRadius locationWithRadius) throws JsonProcessingException {
+        List<NearByComplex> complexes = propertyService.findNearProp(type, locationWithRadius.getLat(), locationWithRadius.getLon(), locationWithRadius.getRadius());
+        return ComplexListResponse.success(complexes);
     }
 }
