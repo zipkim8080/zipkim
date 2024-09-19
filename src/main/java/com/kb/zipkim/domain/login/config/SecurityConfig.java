@@ -2,6 +2,7 @@ package com.kb.zipkim.domain.login.config;
 
 import com.kb.zipkim.domain.login.jwt.JWTFilter;
 import com.kb.zipkim.domain.login.jwt.JWTUtil;
+import com.kb.zipkim.domain.login.oauth2.CustomAuthenticationEntryPoint;
 import com.kb.zipkim.domain.login.oauth2.CustomSuccessHandler;
 import com.kb.zipkim.domain.login.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
 
         http
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
@@ -56,38 +57,22 @@ public class SecurityConfig {
                     }
                 }));
 
-        //csrf disable
-        http
-                .csrf((auth) -> auth.disable());
 
-        //From 로그인 방식 disable
         http
-                .formLogin((auth) -> auth.disable());
-
-        //HTTP Basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
-        // JWTFilter 추가
-//        http
-//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
-        //oauth2
-        http
-                .oauth2Login((oauth2) -> oauth2
+                .csrf((auth) -> auth.disable())    //csrf disable
+                .formLogin((auth) -> auth.disable())   //From 로그인 방식 disable
+                .httpBasic((auth) -> auth.disable())   //HTTP Basic 인증 방식 disable
+//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
+                .oauth2Login((oauth2) -> oauth2     //oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler)
-                );
-
-        //경로별 인가 작업
-        http
-                .authorizeHttpRequests((auth) -> auth
+                        .successHandler(customSuccessHandler))
+                .authorizeHttpRequests((auth) -> auth       //경로별 인가 작업
                         .requestMatchers("/").permitAll()
-                        .anyRequest().permitAll());
-
-        //세션 설정 : STATELESS
-        http
-                .sessionManagement((session) -> session
+                        .anyRequest().permitAll())
+//                        .anyRequest().authenticated())
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .sessionManagement((session) -> session     //세션 설정 : STATELESS
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
