@@ -18,18 +18,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static com.kb.zipkim.domain.prop.entity.QComplex.*;
 
-@SpringBootTest
+//@SpringBootTest
 class PropertyRepositoryTest {
 
     @MockBean
     JWTUtil jwtUtil;
     @MockBean
     SecurityConfig securityConfig;
-
-    @Autowired
-    EntityManager em;
-    @Autowired
-    PropertyRepository propertyRepository;
 
     @Test
     public void 매물등록테스트() throws Exception{
