@@ -51,9 +51,9 @@ public class PropRegisterForm {
 
     private Boolean parking; //주차가능여부
 
-    private Double recentAmount;
+    private double recentAmount;
 
-    private Double recentDeposit;
+    private double recentDeposit;
 
     private String hugNumber;
 

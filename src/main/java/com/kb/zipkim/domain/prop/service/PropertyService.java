@@ -67,7 +67,7 @@ public class PropertyService {
         return result;
     }
 
-    public List<NearByComplex> findNearProp(String type, double latitude, double longitude, double radius) throws JsonProcessingException {
+    public List<NearByComplex> findNearComplexes(String type, double latitude, double longitude, double radius) throws JsonProcessingException {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         GeoReference<String> reference = GeoReference.fromCoordinate(new Point(longitude, latitude));
         Distance distance = new Distance(radius, RedisGeoCommands.DistanceUnit.KILOMETERS);
