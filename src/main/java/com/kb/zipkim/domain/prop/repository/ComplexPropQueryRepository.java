@@ -1,7 +1,6 @@
 package com.kb.zipkim.domain.prop.repository;
 
 import com.kb.zipkim.domain.prop.dto.SearchResponse;
-import com.kb.zipkim.domain.prop.entity.QComplex;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +16,7 @@ import static com.kb.zipkim.domain.prop.entity.QComplex.*;
 
 @Repository
 @RequiredArgsConstructor
-public class ComplexQueryRepository {
+public class ComplexPropQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -42,5 +41,7 @@ public class ComplexQueryRepository {
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
+
+
 
 }
