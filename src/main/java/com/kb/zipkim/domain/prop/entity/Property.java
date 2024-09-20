@@ -22,6 +22,8 @@ public class Property extends BaseEntity {
 
     private Long brokerId; //중개인
 
+    private String detailAddress;
+
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "register_id")
     private Registered registered;
@@ -64,6 +66,7 @@ public class Property extends BaseEntity {
         Property property = new Property();
         property.brokerId = form.getBrokerId();
         property.amount = form.getAmount();
+        property.detailAddress = form.getDetailAddress();
         property.deposit = form.getDeposit();
         property.roomNo = form.getRoomNo();
         property.bathNo = form.getBathNo();

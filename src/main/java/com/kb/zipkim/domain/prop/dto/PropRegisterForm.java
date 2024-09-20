@@ -22,6 +22,8 @@ public class PropRegisterForm {
 
     private String addressName;
 
+    private String detailAddress;
+
     private String mainAddressNo;
 
     private String subAddressNo;
@@ -29,9 +31,9 @@ public class PropRegisterForm {
     private Double longitude;
     private Double latitude;
 
-    private Double amount; //매매가
+    private double amount; //매매가
 
-    private Double deposit; //전세가
+    private double deposit; //전세가
 
     private String roomNo;
 
