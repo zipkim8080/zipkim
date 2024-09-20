@@ -1,5 +1,6 @@
 package com.kb.zipkim.domain.prop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.Registered;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -28,6 +28,7 @@ public class Property extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "complex_id")
+    @JsonIgnore
     private Complex complex;
 
     private Double amount; //매매가
