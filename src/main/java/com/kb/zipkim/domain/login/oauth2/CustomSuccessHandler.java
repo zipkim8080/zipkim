@@ -42,7 +42,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addCookie(createCookie("Authorization", token));
         // 프론트 url
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:5173/");
 
     }
 

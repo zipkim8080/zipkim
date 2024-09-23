@@ -2,6 +2,7 @@ package com.kb.zipkim.domain.login.dto;
 
 import java.util.Map;
 
+// 네이버
 public class NaverResponse implements OAuth2Response{
 
     private final Map<String, Object> attribute;

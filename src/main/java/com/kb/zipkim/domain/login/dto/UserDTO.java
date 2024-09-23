@@ -13,11 +13,9 @@ public class UserDTO {
     public void addUsername(String username) {
         this.username = username;
     }
-
     public void addRole(String role) {
         this.role = role;
     }
-
     public void addName(String name) {
         this.name = name;
     }

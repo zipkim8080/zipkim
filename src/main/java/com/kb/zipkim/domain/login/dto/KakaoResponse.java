@@ -1,6 +1,5 @@
 package com.kb.zipkim.domain.login.dto;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
