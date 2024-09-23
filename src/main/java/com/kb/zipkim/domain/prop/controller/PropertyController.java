@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kb.zipkim.domain.prop.ComplexListResponse;
 import com.kb.zipkim.domain.prop.dto.*;
 import com.kb.zipkim.domain.prop.entity.Complex;
+import com.kb.zipkim.domain.prop.entity.Property;
 import com.kb.zipkim.domain.prop.repository.ComplexPropQueryRepository;
 import com.kb.zipkim.domain.prop.repository.ComplexRepository;
 import com.kb.zipkim.domain.prop.service.PropertyService;
@@ -52,5 +53,11 @@ public class PropertyController {
     @GetMapping("/api/complex/prop-list")
     public Page<SimplePropInfo> PropList(@RequestParam Long complexId, Pageable pageable) {
         return propertyService.findPropList(complexId, pageable);
+    }
+
+    @GetMapping("/api/prop/{id}")
+    public Property getProp(@PathVariable Long id) {
+        //미완성
+        return propertyService.findPropById(id);
     }
 }
