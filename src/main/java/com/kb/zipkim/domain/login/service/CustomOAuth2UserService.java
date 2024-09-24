@@ -29,7 +29,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println(oAuth2User);
         System.out.println("success");
@@ -63,7 +62,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existData == null)
         {
-
 
             UserEntity userEntity = new UserEntity();
             userEntity.addUsername(username);

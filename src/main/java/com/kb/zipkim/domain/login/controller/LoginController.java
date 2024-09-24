@@ -15,15 +15,21 @@ public class LoginController {
 
     private final String KAKAO_USER_INFO_API = "https://kapi.kakao.com/v2/user/info";
 
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    @GetMapping("/login")
+    public ResponseEntity<String> kakaoLogin(){
+        String accessToken = tokenService.getAccessToken();
+        return ResponseEntity.ok(accessToken);
+    }
+
+    /*@RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> kakaoLogin(@RequestParam(required = false) String token,
                                              @RequestBody(required = false) Map<String, String> requestBody) {
         String accessToken = tokenService.getAccessToken();
         if(accessToken != null && !accessToken.isEmpty()) {
-            return ResponseEntity.ok("로그인 완료");
+            return ResponseEntity.ok(accessToken);
         } else {
-            return ResponseEntity.ok("로그인 필요");
+            return ResponseEntity.ok(accessToken);
         }
 
-    }
+    }*/
 }
