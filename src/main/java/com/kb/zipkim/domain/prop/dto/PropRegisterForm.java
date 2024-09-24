@@ -66,6 +66,23 @@ public class PropRegisterForm {
 
 //  등기관련
 
-    private String registerUniqueNum;
+    private String uniqueNumber;
+
+    private String openDate;
+
+    private String address;
+
+    private Boolean attachment1;
+
+    private Boolean attachment2;
+
+    private Boolean trust;
+
+    private Boolean auction;
+
+    private double loan;
+
+    private double leaseAmount;
+
 
 }

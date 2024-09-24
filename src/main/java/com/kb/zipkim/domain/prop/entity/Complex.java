@@ -50,7 +50,7 @@ public class Complex {
 
     private Long propsCount;
 
-    @OneToMany(mappedBy = "complex")
+    @OneToMany(mappedBy = "complex")    
     private List<Property> properties = new ArrayList<>();
 
     public static Complex makeComplex(
