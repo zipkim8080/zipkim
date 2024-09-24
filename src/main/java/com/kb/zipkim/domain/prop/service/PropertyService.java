@@ -10,10 +10,10 @@ import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.prop.repository.ComplexPropQueryRepository;
 import com.kb.zipkim.domain.prop.repository.ComplexRepository;
 import com.kb.zipkim.domain.prop.repository.PropertyRepository;
-import com.kb.zipkim.domain.register.Registered;
+import com.kb.zipkim.domain.register.entity.Registered;
+import com.kb.zipkim.domain.register.repository.RegisteredRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +43,7 @@ public class PropertyService {
 
     private final RedisTemplate<String,String> redisTemplate;
     private final ComplexPropQueryRepository complexPropQueryRepository;
+    private final RegisteredRepository registeredRepository;
 
     @Transactional
     public RegisterResult registerProp(PropRegisterForm form) throws IOException {
@@ -51,9 +51,12 @@ public class PropertyService {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
 
         Property property = Property.makeProperty(form);
-        Registered registered = Registered.builder()
-                .registerUniqueNum(form.getRegisterUniqueNum())
-                .build();
+
+        Registered registered = registeredRepository.findByUniqueNumber(form.getUniqueNumber()).orElseGet(() ->
+                registeredRepository.save(new Registered(form.getUniqueNumber()))
+        );
+        System.out.println(registered.getUniqueNumber());
+        registered.update(form.getOpenDate(), form.getAddress(), form.getAttachment1(),form.getAttachment2(),form.getTrust(),form.getAuction(),form.getLoan(),form.getLeaseAmount());
         property.register(registered);
         property.upload(uploadFiles);
 
@@ -65,7 +68,7 @@ public class PropertyService {
 //                    geoOperations.add(KEY, point, objectMapper.writeValueAsString(nearByComplex));
                     return complexRepository.save(newComplex);
                 });
-        complex.updateRecentAmountAndDeposit(form.getRecentAmount(), form.getRecentDeposit());
+//        complex.updateRecentAmountAndDeposit(form.getRecentAmount(), form.getRecentDeposit());
         property.belongTo(complex);
         propertyRepository.save(property);
         RegisterResult result = new RegisterResult();
