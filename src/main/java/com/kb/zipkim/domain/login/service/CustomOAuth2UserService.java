@@ -5,26 +5,34 @@ import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AccessToken tokenService;
+    private final UserRepository userRepository;
+    private final AccessToken tokenService;
 
     public UserEntity getUserByEmail(String username) {
         return userRepository.findByUsername(username);
     }
-    public CustomOAuth2UserService(UserRepository userRepository) {
+    public CustomOAuth2UserService(UserRepository userRepository, AccessToken tokenService) {
+
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
+
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -37,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String accessToken = userRequest.getAccessToken().getTokenValue();
         System.out.println("카카오 액세스 토큰: " + accessToken);
 
-        tokenService.setAccessToken(accessToken);
+        //tokenService.setAccessToken(accessToken);
 
         OAuth2Response oAuth2Response = null;
 
@@ -57,7 +65,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
-        String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+        String username = oAuth2Response.getProviderId();
+        System.out.println(username);
+        tokenService.setAccessToken(username);
+
         UserEntity existData = userRepository.findByUsername(username);
 
         if (existData == null)
@@ -76,6 +87,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.addName(oAuth2Response.getName());
             userDTO.addRole("ROLE_USER");
 
+
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity, null, new ArrayList<>());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
             return new CustomOAuth2User(userDTO);
 
         }else
@@ -92,6 +109,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole(existData.getRole());
 
+            Authentication authentication = new UsernamePasswordAuthenticationToken(existData, null, new ArrayList<>());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            System.out.println("유저 이름입니당 : " + userDTO.getUsername());
             return new CustomOAuth2User(userDTO);
 
         }

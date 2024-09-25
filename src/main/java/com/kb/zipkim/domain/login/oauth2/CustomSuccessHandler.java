@@ -37,22 +37,20 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
-
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
-
-        response.addCookie(createCookie("Authorization", token));
+        response.addCookie(createCookie("Authorization", token, username));
         // 프론트 url
         response.sendRedirect("http://localhost:5173/");
 
     }
 
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
+    private Cookie createCookie(String key, String value, String username) {
+        String comb = value + ":" + username;
+        Cookie cookie = new Cookie(key, comb);
         cookie.setMaxAge(60*60*60);
         // cookie.setSecure(true);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
 
         return cookie;
 

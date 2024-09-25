@@ -34,6 +34,10 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JWTFilter jwtFilter() {
+        return new JWTFilter(jwtUtil);
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
 
         http
@@ -57,24 +61,29 @@ public class SecurityConfig {
                     }
                 }));
 
-
         http
                 .csrf((auth) -> auth.disable())    //csrf disable
                 .formLogin((auth) -> auth.disable())   //From 로그인 방식 disable
                 .httpBasic((auth) -> auth.disable())   //HTTP Basic 인증 방식 disable
 //                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
                 .oauth2Login((oauth2) -> oauth2     //oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler))
-                .authorizeHttpRequests((auth) -> auth       //경로별 인가 작업
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/").permitAll()
-                        .anyRequest().permitAll())
-//                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
+                /*.oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login") // 로그인 페이지 설정
+                        .defaultSuccessUrl("http://localhost:5173") // 로그인 성공 후 리다이렉트할 URL
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 사용자 정보 서비스를 설정
+                        )
+                )*///                        .anyRequest().authenticated())
 //                .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .sessionManagement((session) -> session     //세션 설정 : STATELESS
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         return http.build();
     }
 }

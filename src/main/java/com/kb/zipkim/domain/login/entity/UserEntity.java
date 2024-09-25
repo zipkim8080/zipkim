@@ -24,6 +24,8 @@ public class UserEntity {
 
     private String role;
 
+    private String phonenumber;
+
     public void addUsername(String username) {
         this.username = username;
     }
@@ -38,5 +40,8 @@ public class UserEntity {
     }
     public void addid(Long id) {
         this.id = id;
+    }
+    public void addphonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 }
