@@ -3,6 +3,8 @@ package com.kb.zipkim.domain.login.service;
 import com.kb.zipkim.domain.login.dto.*;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,8 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AccessToken tokenService;
 
+    public UserEntity getUserByEmail(String username) {
+        return userRepository.findByUsername(username);
+    }
     public CustomOAuth2UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -22,10 +30,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println(oAuth2User);
+        System.out.println(oAuth2User.getAttributes());
         System.out.println("success");
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+        System.out.println("액세스 토큰: " + accessToken);
+
+        tokenService.setAccessToken(accessToken);
+
         OAuth2Response oAuth2Response = null;
 
         if (registrationId.equals("naver")) {
@@ -47,27 +60,28 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
         UserEntity existData = userRepository.findByUsername(username);
 
-        if (existData == null) {
+        if (existData == null)
+        {
 
             UserEntity userEntity = new UserEntity();
-            userEntity.setUsername(username);
-            userEntity.setEmail(oAuth2Response.getEmail());
-            userEntity.setName(oAuth2Response.getName());
-            userEntity.setRole("ROLE_USER");
+            userEntity.addUsername(username);
+            userEntity.addEmail(oAuth2Response.getEmail());
+            userEntity.addName(oAuth2Response.getName());
+            userEntity.addRole("ROLE_USER");
 
             userRepository.save(userEntity);
 
             UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(username);
-            userDTO.setName(oAuth2Response.getName());
-            userDTO.setRole("ROLE_USER");
+            userDTO.addUsername(username);
+            userDTO.addName(oAuth2Response.getName());
+            userDTO.addRole("ROLE_USER");
 
             return new CustomOAuth2User(userDTO);
 
-        }
-        else {
+        }else
+        {
 
-//            existData.setUsername(username);
+            existData.setUsername(username);
             existData.setEmail(oAuth2Response.getEmail());
             existData.setName(oAuth2Response.getName());
 
