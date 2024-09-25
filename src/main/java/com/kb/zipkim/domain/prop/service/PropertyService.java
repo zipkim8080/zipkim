@@ -55,7 +55,6 @@ public class PropertyService {
         Registered registered = registeredRepository.findByUniqueNumber(form.getUniqueNumber()).orElseGet(() ->
                 registeredRepository.save(new Registered(form.getUniqueNumber()))
         );
-        System.out.println(registered.getUniqueNumber());
         registered.update(form.getOpenDate(), form.getAddress(), form.getAttachment1(),form.getAttachment2(),form.getTrust(),form.getAuction(),form.getLoan(),form.getLeaseAmount());
         property.register(registered);
         property.upload(uploadFiles);

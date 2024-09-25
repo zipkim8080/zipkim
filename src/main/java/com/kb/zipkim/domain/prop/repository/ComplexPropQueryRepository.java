@@ -54,8 +54,8 @@ public class ComplexPropQueryRepository {
     public Property findByIdWithRegisterAndImages(@Param("id") Long id){
         return queryFactory.select(property)
                 .from(property)
-                .join(property.registered, registered).fetchJoin()
-                .join(property.images, uploadFile).fetchJoin()
+                .leftJoin(property.registered, registered).fetchJoin()
+                .leftJoin(property.images, uploadFile).fetchJoin()
                 .where(property.id.eq(id))
                 .fetchOne();
 
