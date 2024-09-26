@@ -4,7 +4,9 @@ package com.kb.zipkim.domain.login.controller;
 import com.kb.zipkim.domain.login.dto.AccessToken;
 import com.kb.zipkim.domain.login.dto.CustomOAuth2User;
 import com.kb.zipkim.domain.login.dto.PhoneNumberRequest;
+import com.kb.zipkim.domain.login.jwt.JWTUtil;
 import com.kb.zipkim.domain.login.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +27,14 @@ public class PhoneController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JWTUtil jwtUtil;
+
     @PostMapping("/addPhone")
-    public ResponseEntity<String> addPhone(@RequestBody PhoneNumberRequest phoneNumberRequest) {
+    public ResponseEntity<String> addPhone(@RequestBody PhoneNumberRequest phoneNumberRequest, HttpServletRequest request) {
         String phoneNumber = phoneNumberRequest.getPhoneNumber();
-        String username = phoneNumberRequest.getUsername();
+        String username =jwtUtil.getUsername(request.getHeader("Authorization").substring(7));
+//        String username = phoneNumberRequest.getUsername();
         userService.addPhoneNumber(username, phoneNumber);
         return ResponseEntity.ok("저장 성공");
     }

@@ -33,22 +33,22 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String username = customUserDetails.getUsername();
         String email = customUserDetails.getEmail();
+        String role = customUserDetails.getRole();
+        String token = jwtUtil.createJwt(username, role, email,60*60*100L);     // Ms
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        String role = customUserDetails.getRole();
-        String token = jwtUtil.createJwt(username, role, email,60*60*100L);     // Ms
 
-        response.addCookie(createCookie("Authorization", token, username));
+        response.addCookie(createCookie("Authorization", token));
         // 프론트 url
         response.sendRedirect("http://localhost:5173/");
 
     }
 
-    private Cookie createCookie(String key, String value, String username) {
-        String comb = value + ":" + username;
-        Cookie cookie = new Cookie(key, comb);
+    private Cookie createCookie(String key, String value) {
+//        String comb = value + ":" + username;
+        Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*5);     //  S
         // cookie.setSecure(true);
         cookie.setPath("/");

@@ -61,7 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
-        String username = oAuth2Response.getProvider();
+        String username = oAuth2Response.getProviderId();
         System.out.println(username);
         tokenService.setAccessToken(username);
 
