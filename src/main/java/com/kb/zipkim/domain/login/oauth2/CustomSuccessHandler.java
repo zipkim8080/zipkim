@@ -32,23 +32,24 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
+        String email = customUserDetails.getEmail();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        String role = auth.getAuthority();
+        String role = customUserDetails.getRole();
+        String token = jwtUtil.createJwt(username, role, email,60*60*100L);     // Ms
 
-        String token = jwtUtil.createJwt(username, role, 60*5L);
-
-        response.addCookie(createCookie("Authorization", token));
+        response.addCookie(createCookie("Authorization", token, username));
         // 프론트 url
         response.sendRedirect("http://localhost:5173/");
 
     }
 
-    private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*5);
+    private Cookie createCookie(String key, String value, String username) {
+        String comb = value + ":" + username;
+        Cookie cookie = new Cookie(key, comb);
+        cookie.setMaxAge(60*5);     //  S
         // cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(false);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/sms")
+@RequestMapping("/sms")
 public class SMSController {
 
     final private SMSService smsService;
