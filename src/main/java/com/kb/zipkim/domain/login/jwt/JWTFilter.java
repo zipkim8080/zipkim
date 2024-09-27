@@ -79,6 +79,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
         String email = jwtUtil.getEmail(token);
+        String name = jwtUtil.getName(token);
 
         // userDTO를 생성하여 값 set
         UserDTO userDTO = new UserDTO();

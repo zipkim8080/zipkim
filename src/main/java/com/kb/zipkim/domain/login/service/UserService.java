@@ -16,6 +16,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public String getPhoneNumber(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user.getPhonenumber();
+    }
+
     public void addPhoneNumber(String username, String phoneNumber) {
         UserEntity user = userRepository.findByUsername(username);
         user.setPhonenumber(phoneNumber);
