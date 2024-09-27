@@ -17,7 +17,11 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return Map.of(
+                "username", userDTO.getUsername(),
+                "name", userDTO.getName(),
+                "email", userDTO.getEmail()
+        );
     }
 
     @Override
@@ -40,5 +44,13 @@ public class CustomOAuth2User implements OAuth2User {
 
     public String getUsername() {
         return userDTO.getUsername();
+    }
+
+    public String getEmail() {
+        return userDTO.getEmail();
+    }
+
+    public String getRole() {
+        return userDTO.getRole();
     }
 }

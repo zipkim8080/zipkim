@@ -44,7 +44,7 @@ public class SMSService {
         }
     }
 
-    // 랜덤한 4자리 숫자 생성 메서드
+    // 랜덤한 6자리 숫자 생성 메서드
     private String generateRandomNumber() {
         Random rand = new Random();
         StringBuilder numStr = new StringBuilder();
