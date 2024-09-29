@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,42 +39,10 @@ public class JWTFilter extends OncePerRequestFilter {
             token = bearerToken.substring(7);
         }
 
-//        if (token == null) {
-//            Cookie[] cookies = request.getCookies();
-//            if (cookies != null) {
-//                for (Cookie cookie : cookies) {
-//                    System.out.println(cookie.getName());
-//                    if (cookie.getName().equals("Authorization")) {
-//                        token = cookie.getValue();
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-
         if (token == null || jwtUtil.isExpired(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
-        // Authorization 헤더 검증
-//        if (token == null) {
-//
-//            System.out.println("token is null");
-//            filterChain.doFilter(request, response);
-//            return;     // 조건이 해당되면 메소드 종료
-//        }
-
-        // token
-//        String token = authorization;
-
-        // token 소멸 시간 검증
-//        if (jwtUtil.isExpired(token)) {
-//
-//            System.out.println("token expired!!");
-//            filterChain.doFilter(request, response);
-//            return;     // 조건이 해당되면 메소드 종료
-//        }
 
         // token에서 username과 role 획득
         String username = jwtUtil.getUsername(token);
@@ -82,10 +51,17 @@ public class JWTFilter extends OncePerRequestFilter {
         String name = jwtUtil.getName(token);
 
         // userDTO를 생성하여 값 set
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);
-        userDTO.setEmail(email);
+        UserDTO userDTO = UserDTO.builder()
+                .username(username)
+                .role(role)
+                .email(email)
+                .name(name)
+                .build();
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setUsername(username);
+//        userDTO.setName(name);
+//        userDTO.setRole(role);
+//        userDTO.setEmail(email);
 
         // UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
@@ -95,6 +71,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰을 세션(security context holder)에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        Authentication authentication = securityContext.getAuthentication();
+
 
         // 다음 필터 요청
         filterChain.doFilter(request, response);

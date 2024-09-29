@@ -35,7 +35,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = customUserDetails.getEmail();
         String role = customUserDetails.getRole();
         String name = customUserDetails.getName();
-        String token = jwtUtil.createJwt(username, name, role, email,60*60*100L);     // Ms
+        String token = jwtUtil.createJwt(username, name, role, email,60*60*200L);     // Ms
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -49,7 +49,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private Cookie createCookie(String key, String value) {
 //        String comb = value + ":" + username;
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*5);     //  S
+        cookie.setMaxAge(60*10);     //  S
         // cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(false);
