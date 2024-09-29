@@ -25,7 +25,7 @@ public class Property extends BaseEntity {
 
     private String detailAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_id")
     private Registered registered;
 
