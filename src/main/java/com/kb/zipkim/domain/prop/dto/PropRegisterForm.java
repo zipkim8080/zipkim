@@ -12,9 +12,9 @@ public class PropRegisterForm {
 
     private Long brokerId;
 
-    private String type;
+    private Long complexId;
 
-    private String zipcode;
+    private String type;
 
     private String roadName;
 
@@ -53,16 +53,10 @@ public class PropRegisterForm {
 
     private Boolean parking; //주차가능여부
 
-    private double recentAmount;
-
-    private double recentDeposit;
-
     private String hugNumber;
 
     private Boolean hasSchool;
     private Boolean hasConvenience;
-
-    private String complexName;
 
 //  등기관련
 
@@ -83,6 +77,5 @@ public class PropRegisterForm {
     private double loan;
 
     private double leaseAmount;
-
 
 }

@@ -1,5 +1,6 @@
 package com.kb.zipkim.domain.prop.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.zipkim.domain.prop.dto.*;
@@ -47,21 +48,17 @@ public class PropertyService {
 
         Property property = Property.makeProperty(form);
 
-        Registered registered = registeredRepository.findByUniqueNumber(form.getUniqueNumber()).orElseGet(() ->
-                registeredRepository.save(new Registered(form.getUniqueNumber()))
-        );
-        registered.update(form.getOpenDate(), form.getAddress(), form.getAttachment1(),form.getAttachment2(),form.getTrust(),form.getAuction(),form.getLoan(),form.getLeaseAmount());
+        if(registeredRepository.existsByUniqueNumber(form.getUniqueNumber())){
+            throw new IllegalArgumentException("이미 존재하는 등기입니다. 등기번호: "+ form.getUniqueNumber());
+        };
+        Registered registered = registeredRepository.save(new Registered(form.getUniqueNumber(), form.getOpenDate(), form.getAddress(), form.getAttachment1(), form.getAttachment2(), form.getTrust(), form.getAuction(), form.getLoan(), form.getLeaseAmount()));
         property.register(registered);
         property.upload(uploadFiles);
+        Complex complex = getComplex(form);
 
-        Complex complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
-                .orElseGet(()->{
-                    Complex newComplex = Complex.makeComplex(form);
 //                    NearByComplex nearByComplex = new NearByComplex(newComplex.getId(),newComplex.getType(), newComplex.calcAvrDeposit(), newComplex.calcAvrAmount(), newComplex.getRecentAmount(), newComplex.getRecentDeposit(), newComplex.calcCurrentDepositRatio(), newComplex.calcRecentDepositRatio(), newComplex.getLongitude(),newComplex.getLatitude());
 //                    Point point = new Point(newComplex.getLongitude(), newComplex.getLatitude());
 //                    geoOperations.add(KEY, point, objectMapper.writeValueAsString(nearByComplex));
-                    return complexRepository.save(newComplex);
-                });
 //        complex.updateRecentAmountAndDeposit(form.getRecentAmount(), form.getRecentDeposit());
         property.belongTo(complex);
         propertyRepository.save(property);
@@ -71,6 +68,20 @@ public class PropertyService {
         }
         result.setPropId(property.getId());
         return result;
+    }
+
+    private Complex getComplex(PropRegisterForm form) {
+        Complex complex;
+        if(form.getType().equals("apt") || form.getType().equals("opi")) {
+            complex = complexRepository.findById(form.getComplexId()).orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + form.getComplexId()));
+        }else{
+            complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
+                    .orElseGet(()->{
+                        Complex newComplex = Complex.makeComplex(form);
+                        return complexRepository.save(newComplex);
+                    });
+        }
+        return complex;
     }
 
     public Page<SimplePropInfo> findPropList(Long complexId, Pageable pageable) {
