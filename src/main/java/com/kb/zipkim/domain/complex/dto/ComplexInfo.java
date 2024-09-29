@@ -1,12 +1,8 @@
-package com.kb.zipkim.domain.prop.dto;
+package com.kb.zipkim.domain.complex.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

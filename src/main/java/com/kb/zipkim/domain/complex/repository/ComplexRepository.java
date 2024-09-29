@@ -1,6 +1,6 @@
-package com.kb.zipkim.domain.prop.repository;
+package com.kb.zipkim.domain.complex.repository;
 
-import com.kb.zipkim.domain.prop.entity.Complex;
+import com.kb.zipkim.domain.complex.entity.Complex;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

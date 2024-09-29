@@ -3,14 +3,12 @@ package com.kb.zipkim.domain.prop;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Getter
-public class ComplexListResponse<T> {
+public class Response<T> {
     private String resultCode;
     private T data;
-    public static <T> ComplexListResponse<T> success(T data) {
-        return new ComplexListResponse<>("200", data);
+    public static <T> Response<T> success(T data) {
+        return new Response<>("200", data);
     }
 }
