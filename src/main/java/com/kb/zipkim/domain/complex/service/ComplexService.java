@@ -3,6 +3,7 @@ package com.kb.zipkim.domain.complex.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kb.zipkim.domain.complex.dto.SearchResponse;
 import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.complex.repository.ComplexRepository;
 import com.kb.zipkim.domain.complex.dto.ComplexInfo;
@@ -56,10 +57,20 @@ public class ComplexService {
         return complexes;
     }
 
+    // 평 정보 추가해야함
     public ComplexInfo findById(Long complexId) {
         Complex findComplex = complexRepository.findById(complexId)
                 .orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + complexId));
         return new ComplexInfo(findComplex.getId(), findComplex.getBgdCd(), findComplex.getComplexName(), findComplex.getRoadName(), findComplex.getRecentAmount(), findComplex.getRecentDeposit(), findComplex.getAddressName(), findComplex.getMainAddressNo(), findComplex.getSubAddressNo());
+    }
+
+    public List<SearchResponse> findWithBgd(String bgdCd) {
+        List<Complex> find = complexRepository.findByBgdCd(bgdCd);
+        List<SearchResponse> responses = new ArrayList<>();
+        for (Complex complex : find) {
+            responses.add(new SearchResponse(complex.getId(), complex.getComplexName(), complex.getType(), complex.getAddressName(), complex.getLatitude(), complex.getLongitude()));
+        }
+        return responses;
     }
 
 }

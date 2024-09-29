@@ -41,8 +41,4 @@ public class PropertyController {
         return propertyService.findPropById(id);
     }
 
-//    @GetMapping
-//    public List<SearchResponse> searchComplexesWithBgd(@RequestParam String bgdCd) {
-//
-//    }
 }

@@ -38,4 +38,9 @@ public class ComplexController {
     public Page<SearchResponse> searchComplexes(@RequestParam String keyword, Pageable pageable) {
         return complexPropQueryRepository.search(keyword.trim(), pageable);
     }
+
+    @GetMapping("/api/complexes")
+    public List<SearchResponse> getComplexes(@RequestParam String bgdCd) {
+        return complexService.findWithBgd(bgdCd);
+    }
 }
