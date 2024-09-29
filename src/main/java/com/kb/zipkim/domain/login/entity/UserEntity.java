@@ -4,12 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
@@ -26,22 +27,4 @@ public class UserEntity {
 
     private String phonenumber;
 
-    public void addUsername(String username) {
-        this.username = username;
-    }
-    public void addRole(String role) {
-        this.role = role;
-    }
-    public void addEmail(String email) {
-        this.email = email;
-    }
-    public void addName(String name) {
-        this.name = name;
-    }
-    public void addid(Long id) {
-        this.id = id;
-    }
-    public void addphonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
 }
