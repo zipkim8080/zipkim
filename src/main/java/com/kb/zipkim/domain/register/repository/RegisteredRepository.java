@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface RegisteredRepository extends JpaRepository<Registered, String> {
-    Optional<Registered> findByUniqueNumber(String uniqueNumber);
+    boolean existsByUniqueNumber(String uniqueNumber);
 }

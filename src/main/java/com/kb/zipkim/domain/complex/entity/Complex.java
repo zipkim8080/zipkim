@@ -1,6 +1,7 @@
-package com.kb.zipkim.domain.prop.entity;
+package com.kb.zipkim.domain.complex.entity;
 
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
+import com.kb.zipkim.domain.prop.entity.Property;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class Complex {
 
     @Id
@@ -58,8 +60,6 @@ public class Complex {
     ) {
         Complex complex = new Complex();
         complex.type = form.getType();
-        complex.complexName = form.getComplexName();
-        complex.zipcode = form.getZipcode();
         complex.roadName = form.getRoadName();
         complex.bgdCd = form.getBgdCd();
         complex.addressName = form.getAddressName();
@@ -67,8 +67,6 @@ public class Complex {
         complex.subAddressNo = form.getSubAddressNo();
         complex.longitude = form.getLongitude();
         complex.latitude = form.getLatitude();
-        complex.recentAmount = form.getRecentAmount();
-        complex.recentDeposit = form.getRecentDeposit();
         complex.totalPropAmount = 0.0;
         complex.totalPropDeposit = 0.0;
         complex.propsCount = 0L;

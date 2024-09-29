@@ -33,10 +33,6 @@ public class Registered {  //등기
 
     private double leaseAmount;
 
-    public Registered(String uniqueNumber) {
-        this.uniqueNumber = uniqueNumber;
-    }
-
     public void update(String openDate,String address,Boolean attachment1,Boolean attachment2,Boolean trust,Boolean auction, double loan, double leaseAmount) {
         this.openDate = openDate;
         this.address = address;

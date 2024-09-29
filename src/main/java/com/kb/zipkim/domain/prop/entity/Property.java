@@ -1,6 +1,7 @@
 package com.kb.zipkim.domain.prop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.entity.Registered;
@@ -24,7 +25,7 @@ public class Property extends BaseEntity {
 
     private String detailAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_id")
     private Registered registered;
 

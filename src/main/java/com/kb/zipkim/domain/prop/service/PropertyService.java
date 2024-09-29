@@ -1,14 +1,15 @@
 package com.kb.zipkim.domain.prop.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.zipkim.domain.prop.dto.*;
-import com.kb.zipkim.domain.prop.entity.Complex;
+import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.prop.entity.Property;
 import com.kb.zipkim.domain.prop.file.FileStoreService;
 import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.prop.repository.ComplexPropQueryRepository;
-import com.kb.zipkim.domain.prop.repository.ComplexRepository;
+import com.kb.zipkim.domain.complex.repository.ComplexRepository;
 import com.kb.zipkim.domain.prop.repository.PropertyRepository;
 import com.kb.zipkim.domain.register.entity.Registered;
 import com.kb.zipkim.domain.register.repository.RegisteredRepository;
@@ -35,38 +36,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PropertyService {
 
-    private static final String KEY = "complexes";
     private final PropertyRepository propertyRepository;
     private final ComplexRepository complexRepository;
     private final FileStoreService fileStoreService;
-    private final ObjectMapper objectMapper;
-
-    private final RedisTemplate<String,String> redisTemplate;
     private final ComplexPropQueryRepository complexPropQueryRepository;
     private final RegisteredRepository registeredRepository;
 
     @Transactional
     public RegisterResult registerProp(PropRegisterForm form) throws IOException {
         List<UploadFile> uploadFiles = fileStoreService.storeFiles(form.getImages());
-        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
 
         Property property = Property.makeProperty(form);
 
-        Registered registered = registeredRepository.findByUniqueNumber(form.getUniqueNumber()).orElseGet(() ->
-                registeredRepository.save(new Registered(form.getUniqueNumber()))
-        );
-        registered.update(form.getOpenDate(), form.getAddress(), form.getAttachment1(),form.getAttachment2(),form.getTrust(),form.getAuction(),form.getLoan(),form.getLeaseAmount());
+        if(registeredRepository.existsByUniqueNumber(form.getUniqueNumber())){
+            throw new IllegalArgumentException("이미 존재하는 등기입니다. 등기번호: "+ form.getUniqueNumber());
+        };
+        Registered registered = registeredRepository.save(new Registered(form.getUniqueNumber(), form.getOpenDate(), form.getAddress(), form.getAttachment1(), form.getAttachment2(), form.getTrust(), form.getAuction(), form.getLoan(), form.getLeaseAmount()));
         property.register(registered);
         property.upload(uploadFiles);
+        Complex complex = getComplex(form);
 
-        Complex complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
-                .orElseGet(()->{
-                    Complex newComplex = Complex.makeComplex(form);
 //                    NearByComplex nearByComplex = new NearByComplex(newComplex.getId(),newComplex.getType(), newComplex.calcAvrDeposit(), newComplex.calcAvrAmount(), newComplex.getRecentAmount(), newComplex.getRecentDeposit(), newComplex.calcCurrentDepositRatio(), newComplex.calcRecentDepositRatio(), newComplex.getLongitude(),newComplex.getLatitude());
 //                    Point point = new Point(newComplex.getLongitude(), newComplex.getLatitude());
 //                    geoOperations.add(KEY, point, objectMapper.writeValueAsString(nearByComplex));
-                    return complexRepository.save(newComplex);
-                });
 //        complex.updateRecentAmountAndDeposit(form.getRecentAmount(), form.getRecentDeposit());
         property.belongTo(complex);
         propertyRepository.save(property);
@@ -78,31 +70,18 @@ public class PropertyService {
         return result;
     }
 
-    public List<NearByComplex> findNearComplexes(String type, double latitude, double longitude, double radius) throws JsonProcessingException {
-        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
-        GeoReference<String> reference = GeoReference.fromCoordinate(new Point(longitude, latitude));
-        Distance distance = new Distance(radius, RedisGeoCommands.DistanceUnit.KILOMETERS);
-
-        RedisGeoCommands.GeoRadiusCommandArgs args = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs()
-                .includeCoordinates()
-                .includeDistance()
-                .sortAscending();
-
-        GeoResults<RedisGeoCommands.GeoLocation<String>> results = geoOperations.search(KEY, reference, distance, args);
-        List<NearByComplex> complexes = new ArrayList<>();
-
-        if(results == null) return complexes; //주변값이 없으면 빈 배열반환
-
-        for (GeoResult<RedisGeoCommands.GeoLocation<String>> result : results) {
-            RedisGeoCommands.GeoLocation<String> location = result.getContent();
-            NearByComplex complex = objectMapper.readValue(location.getName(), NearByComplex.class);
-            if (!complex.getType().equals(type) ) {
-                continue;
-            }
-            complex.setDistance(result.getDistance().getValue());
-            complexes.add(complex);
+    private Complex getComplex(PropRegisterForm form) {
+        Complex complex;
+        if(form.getType().equals("apt") || form.getType().equals("opi")) {
+            complex = complexRepository.findById(form.getComplexId()).orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + form.getComplexId()));
+        }else{
+            complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
+                    .orElseGet(()->{
+                        Complex newComplex = Complex.makeComplex(form);
+                        return complexRepository.save(newComplex);
+                    });
         }
-        return complexes;
+        return complex;
     }
 
     public Page<SimplePropInfo> findPropList(Long complexId, Pageable pageable) {

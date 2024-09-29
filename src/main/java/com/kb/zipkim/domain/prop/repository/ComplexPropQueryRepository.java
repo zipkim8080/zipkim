@@ -1,10 +1,7 @@
 package com.kb.zipkim.domain.prop.repository;
 
-import com.kb.zipkim.domain.prop.dto.SearchResponse;
+import com.kb.zipkim.domain.complex.dto.SearchResponse;
 import com.kb.zipkim.domain.prop.entity.Property;
-import com.kb.zipkim.domain.prop.entity.QProperty;
-import com.kb.zipkim.domain.prop.file.QUploadFile;
-import com.kb.zipkim.domain.register.entity.QRegistered;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,9 +13,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-import static com.kb.zipkim.domain.prop.entity.QComplex.*;
+import static com.kb.zipkim.domain.complex.entity.QComplex.*;
 import static com.kb.zipkim.domain.prop.entity.QProperty.*;
 import static com.kb.zipkim.domain.prop.file.QUploadFile.*;
 import static com.kb.zipkim.domain.register.entity.QRegistered.*;
