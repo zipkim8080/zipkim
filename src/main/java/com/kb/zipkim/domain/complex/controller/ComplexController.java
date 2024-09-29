@@ -31,7 +31,7 @@ public class ComplexController {
 
     @GetMapping("/api/complex/summary")
     public ComplexInfo getComplexSummary(@RequestParam Long complexId) {
-        return complexService.findById(complexId);
+        return complexService.findWithArea(complexId);
     }
 
     @GetMapping("/api/search")
@@ -39,8 +39,8 @@ public class ComplexController {
         return complexPropQueryRepository.search(keyword.trim(), pageable);
     }
 
-    @GetMapping("/api/complexes")
+    @GetMapping("/api/select-info")
     public List<SearchResponse> getComplexes(@RequestParam String bgdCd) {
-        return complexService.findWithBgd(bgdCd);
+        return complexService.findByBgd(bgdCd);
     }
 }

@@ -1,8 +1,12 @@
 package com.kb.zipkim.domain.complex.dto;
 
+import com.kb.zipkim.domain.area.dto.AreaInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,4 +31,5 @@ public class ComplexInfo {
 
     private String subAddressNo;
 
+    private List<AreaInfo> areas = new ArrayList<>();
 }

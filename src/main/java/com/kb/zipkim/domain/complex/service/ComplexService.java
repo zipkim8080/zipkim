@@ -3,6 +3,9 @@ package com.kb.zipkim.domain.complex.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kb.zipkim.domain.area.dto.AreaInfo;
+import com.kb.zipkim.domain.area.entity.Area;
+import com.kb.zipkim.domain.area.repository.AreaRepository;
 import com.kb.zipkim.domain.complex.dto.SearchResponse;
 import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.complex.repository.ComplexRepository;
@@ -21,12 +24,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ComplexService {
     private static final String KEY = "complexes";
 
+    private final AreaRepository areaRepository;
     private final ComplexRepository complexRepository;
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
@@ -57,14 +62,15 @@ public class ComplexService {
         return complexes;
     }
 
-    // 평 정보 추가해야함
-    public ComplexInfo findById(Long complexId) {
+    public ComplexInfo findWithArea(Long complexId) {
         Complex findComplex = complexRepository.findById(complexId)
                 .orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + complexId));
-        return new ComplexInfo(findComplex.getId(), findComplex.getBgdCd(), findComplex.getComplexName(), findComplex.getRoadName(), findComplex.getRecentAmount(), findComplex.getRecentDeposit(), findComplex.getAddressName(), findComplex.getMainAddressNo(), findComplex.getSubAddressNo());
+        List<Area> areas = areaRepository.findByComplex(findComplex);
+        List<AreaInfo> areasInfo = areas.stream().map(area -> new AreaInfo(area.getId(), area.getSupplyArea(), area.getPyeongName())).collect(Collectors.toList());
+        return new ComplexInfo(findComplex.getId(), findComplex.getBgdCd(), findComplex.getComplexName(), findComplex.getRoadName(), findComplex.getRecentAmount(), findComplex.getRecentDeposit(), findComplex.getAddressName(), findComplex.getMainAddressNo(), findComplex.getSubAddressNo(),areasInfo);
     }
 
-    public List<SearchResponse> findWithBgd(String bgdCd) {
+    public List<SearchResponse> findByBgd(String bgdCd) {
         List<Complex> find = complexRepository.findByBgdCd(bgdCd);
         List<SearchResponse> responses = new ArrayList<>();
         for (Complex complex : find) {
