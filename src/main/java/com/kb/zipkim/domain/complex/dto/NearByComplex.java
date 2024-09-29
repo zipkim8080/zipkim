@@ -1,10 +1,6 @@
-package com.kb.zipkim.domain.prop.dto;
+package com.kb.zipkim.domain.complex.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import static org.springframework.util.StringUtils.*;
 
 @Data
 @AllArgsConstructor

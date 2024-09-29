@@ -1,9 +1,9 @@
-package com.kb.zipkim.domain.prop.entity;
+package com.kb.zipkim.domain.complex.entity;
 
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
+import com.kb.zipkim.domain.prop.entity.Property;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.kb.zipkim.domain.prop.dto;
+package com.kb.zipkim.domain.complex.dto;
 
 import lombok.Data;
 
