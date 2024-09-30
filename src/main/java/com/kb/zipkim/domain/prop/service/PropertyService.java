@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -98,10 +99,17 @@ public class PropertyService {
         return new PageImpl<>(simplePropInfos, pageable, findProps.getTotalElements());
     }
 
-    public Property findPropById(Long id) {
+    public DetailPropInfo findPropById(Long id) {
         Property property = complexPropQueryRepository.findByIdWithRegisterAndImages(id);
+        DetailPropInfo detailInfo = DetailPropInfo.toDetailPropInfo(property);
+        List<UploadFile> images = property.getImages();
 
-        return property;
+        List<PropImage> imageUrl = images.stream()
+                .map(image -> new PropImage(image.getId(), fileStoreService.getFullPath(image.getStoreFileName())))
+                .collect(Collectors.toList());
+
+        detailInfo.setImages(imageUrl);
+        return detailInfo;
     }
 
 }
