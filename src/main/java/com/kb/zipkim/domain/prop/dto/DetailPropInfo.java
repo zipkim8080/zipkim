@@ -31,6 +31,8 @@ public class DetailPropInfo {
 
     private String complexName;
 
+    private String detailAddress;
+
     private RegisterResponse register;
 
     private double amount;
@@ -68,6 +70,7 @@ public class DetailPropInfo {
                 .phoneNumber(property.getBroker().getPhonenumber())
                 .name(property.getBroker().getName())
                 .address(property.getComplex().getAddressName())
+                .detailAddress(property.getDetailAddress())
                 .complexName(property.getComplex().getComplexName())
                 .roadName(property.getComplex().getRoadName())
                 .register(RegisterResponse.toResponse(property.getRegistered()))
