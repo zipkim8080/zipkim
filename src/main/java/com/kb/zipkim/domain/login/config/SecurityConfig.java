@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())    //csrf disable
                 .formLogin(login -> login.disable())   //From 로그인 방식 disable
                 .httpBasic(basic -> basic.disable())   //HTTP Basic 인증 방식 disable
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
+//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
                 .oauth2Login((oauth2) -> oauth2     //oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
