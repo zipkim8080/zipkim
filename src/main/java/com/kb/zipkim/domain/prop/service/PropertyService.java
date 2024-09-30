@@ -3,6 +3,8 @@ package com.kb.zipkim.domain.prop.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kb.zipkim.domain.login.entity.UserEntity;
+import com.kb.zipkim.domain.login.repository.UserRepository;
 import com.kb.zipkim.domain.prop.dto.*;
 import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.prop.entity.Property;
@@ -41,12 +43,13 @@ public class PropertyService {
     private final FileStoreService fileStoreService;
     private final ComplexPropQueryRepository complexPropQueryRepository;
     private final RegisteredRepository registeredRepository;
-
+    private final UserRepository userRepository;
     @Transactional
-    public RegisterResult registerProp(PropRegisterForm form) throws IOException {
+    public RegisterResult registerProp(PropRegisterForm form,String username) throws IOException {
         List<UploadFile> uploadFiles = fileStoreService.storeFiles(form.getImages());
+        UserEntity broker = userRepository.findByUsername(username);
 
-        Property property = Property.makeProperty(form);
+        Property property = Property.makeProperty(form,broker);
 
         if(registeredRepository.existsByUniqueNumber(form.getUniqueNumber())){
             throw new IllegalArgumentException("이미 존재하는 등기입니다. 등기번호: "+ form.getUniqueNumber());
@@ -97,7 +100,6 @@ public class PropertyService {
 
     public Property findPropById(Long id) {
         Property property = complexPropQueryRepository.findByIdWithRegisterAndImages(id);
-        //로그인시 추가 개선필요
 
         return property;
     }
