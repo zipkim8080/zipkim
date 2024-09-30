@@ -98,7 +98,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         }else
         {
-
+        //lombok build를 사용하는게 편하다
             existData.setUsername(username);
             existData.setEmail(email);
             existData.setName(name);
@@ -123,7 +123,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return new CustomOAuth2User(userDTO);
 
         }
-
-    }
-
+    } //@RequiredArgdsConstructor 를 사용하면 편리
 }
