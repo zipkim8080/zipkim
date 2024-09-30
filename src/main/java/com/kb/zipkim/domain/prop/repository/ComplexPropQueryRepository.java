@@ -52,6 +52,7 @@ public class ComplexPropQueryRepository {
                 .from(property)
                 .leftJoin(property.registered, registered).fetchJoin()
                 .leftJoin(property.images, uploadFile).fetchJoin()
+                .leftJoin(property.complex, complex).fetchJoin()
                 .where(property.id.eq(id))
                 .fetchOne();
 

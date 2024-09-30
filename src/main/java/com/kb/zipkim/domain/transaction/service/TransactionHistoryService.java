@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,7 @@ public class TransactionHistoryService {
 
     public Page<TransactionResponse> findHistory(Long areaId, String type, Pageable pageable) {
 
-        Page<TransactionHistory> transactions = transactionHistoryRepository.findByAreaIdAndTransactionType(areaId, TransactionType.valueOf(type.toUpperCase()), pageable);
+        Page<TransactionHistory> transactions = transactionHistoryRepository.findByAreaIdAndType(areaId, TransactionType.valueOf(type.toUpperCase()), pageable);
         List<TransactionResponse> responses = transactions.stream()
                 .map(transaction -> TransactionResponse.builder()
                         .tradeYear(transaction.getTradeYear())

@@ -2,6 +2,7 @@ package com.kb.zipkim.domain.prop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kb.zipkim.domain.complex.entity.Complex;
+import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.prop.dto.PropRegisterForm;
 import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.register.entity.Registered;
@@ -21,7 +22,9 @@ public class Property extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long brokerId; //중개인
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "broker_id")
+    private UserEntity broker; //중개인
 
     private String detailAddress;
 
@@ -62,10 +65,10 @@ public class Property extends BaseEntity {
     private Boolean hasSchool;
     private Boolean hasConvenience;
     public static Property makeProperty(
-           PropRegisterForm form
+           PropRegisterForm form,UserEntity userEntity
     ) {
         Property property = new Property();
-        property.brokerId = form.getBrokerId();
+        property.broker = userEntity;
         property.amount = form.getAmount();
         property.detailAddress = form.getDetailAddress();
         property.deposit = form.getDeposit();

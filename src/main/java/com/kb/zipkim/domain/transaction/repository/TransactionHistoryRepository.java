@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface TransactionHistoryRepository extends JpaRepository<TransactionHistory, Long> {
 
     @Query("""
@@ -18,5 +16,5 @@ public interface TransactionHistoryRepository extends JpaRepository<TransactionH
            and t.type = :type
            order by t.tradeYear desc, t.tradeMonth desc
            """)
-    Page<TransactionHistory> findByAreaIdAndTransactionType(@Param("areaId") Long area_id,@Param("type") TransactionType type, Pageable pageable);
+    Page<TransactionHistory> findByAreaIdAndType(@Param("areaId") Long area_id,@Param("type") TransactionType type, Pageable pageable);
 }
