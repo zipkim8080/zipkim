@@ -32,7 +32,7 @@ public class PropertyController {
     @PostMapping("/api/property")
     public RegisterResult createProp(@ModelAttribute PropRegisterForm propRegisterForm, @AuthenticationPrincipal CustomOAuth2User user) throws IOException {
         if(user == null) throw new AuthException(ExceptionCode.WITHOUT_TOKEN);
-        return propertyService.registerProp(propRegisterForm, user.getName());
+        return propertyService.registerProp(propRegisterForm, user.getUsername());
     }
 
 
@@ -42,8 +42,7 @@ public class PropertyController {
     }
 
     @GetMapping("/api/prop/{id}")
-    public Property getProp(@PathVariable Long id) {
-        //미완성
+    public DetailPropInfo getProp(@PathVariable Long id) {
         return propertyService.findPropById(id);
     }
 

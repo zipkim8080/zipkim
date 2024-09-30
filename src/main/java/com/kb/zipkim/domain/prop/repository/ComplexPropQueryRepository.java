@@ -1,6 +1,7 @@
 package com.kb.zipkim.domain.prop.repository;
 
 import com.kb.zipkim.domain.complex.dto.SearchResponse;
+import com.kb.zipkim.domain.login.entity.QUserEntity;
 import com.kb.zipkim.domain.prop.entity.Property;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.kb.zipkim.domain.complex.entity.QComplex.*;
+import static com.kb.zipkim.domain.login.entity.QUserEntity.*;
 import static com.kb.zipkim.domain.prop.entity.QProperty.*;
 import static com.kb.zipkim.domain.prop.file.QUploadFile.*;
 import static com.kb.zipkim.domain.register.entity.QRegistered.*;
@@ -52,7 +54,8 @@ public class ComplexPropQueryRepository {
                 .from(property)
                 .leftJoin(property.registered, registered).fetchJoin()
                 .leftJoin(property.images, uploadFile).fetchJoin()
-                .leftJoin(property.complex, complex).fetchJoin()
+                .join(property.complex, complex).fetchJoin()
+                .join(property.broker, userEntity).fetchJoin()
                 .where(property.id.eq(id))
                 .fetchOne();
 
