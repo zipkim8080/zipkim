@@ -1,6 +1,7 @@
 package com.kb.zipkim.domain.prop.dto;
 
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,8 +10,6 @@ import java.util.List;
 
 @Data
 public class PropRegisterForm {
-
-    private Long brokerId;
 
     private Long complexId;
 
@@ -60,6 +59,7 @@ public class PropRegisterForm {
 
 //  등기관련
 
+    @NotBlank(message = "등기고유번호는 필수입니다.")
     private String uniqueNumber;
 
     private String openDate;
