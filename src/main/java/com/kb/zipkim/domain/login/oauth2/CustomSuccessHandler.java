@@ -40,10 +40,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-
-        response.addCookie(createCookie("Authorization", token));
+//        response.addCookie(createCookie("Authorization", token));
+//        response.setHeader("Authorization", token);
+        getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/redirect-uri?token="+token);
         // 프론트 url
-        response.sendRedirect("http://localhost:5173/");
+//        response.sendRedirect("http://localhost:5173/");
     }
 
     private Cookie createCookie(String key, String value) {
@@ -51,7 +52,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*10);     //  S
         // cookie.setSecure(true);
-        cookie.setDomain("localhost");
         cookie.setPath("/");
         cookie.setHttpOnly(false);
 
