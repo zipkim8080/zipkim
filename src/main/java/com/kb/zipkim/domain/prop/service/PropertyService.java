@@ -1,8 +1,6 @@
 package com.kb.zipkim.domain.prop.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
 import com.kb.zipkim.domain.prop.dto.*;
@@ -20,14 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.GeoResult;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
-import org.springframework.data.redis.connection.RedisGeoCommands;
-import org.springframework.data.redis.core.GeoOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.domain.geo.GeoReference;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -52,9 +42,6 @@ public class PropertyService {
 
         Property property = Property.makeProperty(form,broker);
 
-        if(registeredRepository.existsByUniqueNumber(form.getUniqueNumber())){
-            throw new IllegalArgumentException("이미 존재하는 등기입니다. 등기번호: "+ form.getUniqueNumber());
-        };
         Registered registered = registeredRepository.save(new Registered(form.getUniqueNumber(), form.getOpenDate(), form.getAddress(), form.getAttachment1(), form.getAttachment2(), form.getTrust(), form.getAuction(), form.getLoan(), form.getLeaseAmount()));
         property.register(registered);
         property.upload(uploadFiles);
@@ -74,7 +61,18 @@ public class PropertyService {
         return result;
     }
 
+
+    private void validateForm(PropRegisterForm form) {
+        if (form.getType().equals("apt") || form.getType().equals("opi")) {
+            if(form.getComplexId() == null) throw new IllegalArgumentException("complexId는 필수입니다.");
+        }else{
+            if(form.getBgdCd()==null || form.getMainAddressNo() == null || form.getSubAddressNo() == null)
+                throw new IllegalArgumentException("법정동코드, 지번은 필수입닌다.");
+        }
+    }
+
     private Complex getComplex(PropRegisterForm form) {
+        validateForm(form);
         Complex complex;
         if(form.getType().equals("apt") || form.getType().equals("opi")) {
             complex = complexRepository.findById(form.getComplexId()).orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + form.getComplexId()));
