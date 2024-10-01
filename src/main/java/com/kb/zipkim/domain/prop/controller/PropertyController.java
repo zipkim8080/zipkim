@@ -9,6 +9,7 @@ import com.kb.zipkim.domain.complex.repository.ComplexRepository;
 import com.kb.zipkim.domain.prop.service.PropertyService;
 import com.kb.zipkim.global.exception.AuthException;
 import com.kb.zipkim.global.exception.ExceptionCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class PropertyController {
     private final ComplexPropQueryRepository complexPropQueryRepository;
 
     @PostMapping("/api/property")
-    public RegisterResult createProp(@ModelAttribute PropRegisterForm propRegisterForm, @AuthenticationPrincipal CustomOAuth2User user) throws IOException {
+    public RegisterResult createProp(@Valid @ModelAttribute PropRegisterForm propRegisterForm, @AuthenticationPrincipal CustomOAuth2User user) throws IOException {
         if(user == null) throw new AuthException(ExceptionCode.WITHOUT_TOKEN);
         return propertyService.registerProp(propRegisterForm, user.getUsername());
     }
