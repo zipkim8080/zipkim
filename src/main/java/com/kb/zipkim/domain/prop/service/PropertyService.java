@@ -41,9 +41,7 @@ public class PropertyService {
         UserEntity broker = userRepository.findByUsername(username);
 
         Property property = Property.makeProperty(form,broker);
-        if(registeredRepository.existsByUniqueNumber(form.getUniqueNumber())){
-            throw new IllegalArgumentException("이미 존재하는 등기입니다. 등기번호: "+ form.getUniqueNumber());
-        };
+
         Registered registered = registeredRepository.save(new Registered(form.getUniqueNumber(), form.getOpenDate(), form.getAddress(), form.getAttachment1(), form.getAttachment2(), form.getTrust(), form.getAuction(), form.getLoan(), form.getLeaseAmount()));
         property.register(registered);
         property.upload(uploadFiles);
@@ -62,6 +60,7 @@ public class PropertyService {
         result.setPropId(property.getId());
         return result;
     }
+
 
     private void validateForm(PropRegisterForm form) {
         if (form.getType().equals("apt") || form.getType().equals("opi")) {
