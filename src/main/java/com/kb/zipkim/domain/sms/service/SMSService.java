@@ -19,7 +19,7 @@ public class SMSService {
     @Value("${coolsms.api.number}")
     private String fromPhoneNumber;
 
-    public String sendSms(String to) throws CoolsmsException { //String to 부분을 파이널 라이즈 하는게 좋다.
+    public String sendSms(String to) throws CoolsmsException {
         try {
             // 랜덤한 4자리 인증번호 생성
             String numStr = generateRandomNumber();
@@ -45,7 +45,7 @@ public class SMSService {
     }
 
     // 랜덤한 6자리 숫자 생성 메서드
-    private String generateRandomNumber() { //콘스턴트로 변수에 의미를 담아주고 사용하는게 알아보기 편하다.
+    private String generateRandomNumber() {
         Random rand = new Random();
         StringBuilder numStr = new StringBuilder();
         for (int i = 0; i < 6; i++) {

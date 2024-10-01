@@ -26,11 +26,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-//        System.out.println(oAuth2User.getAttributes());
+        System.out.println(oAuth2User.getAttributes());
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String accessToken = userRequest.getAccessToken().getTokenValue();
-//        System.out.println("액세스 토큰: " + accessToken);
+        System.out.println("액세스 토큰: " + accessToken);
 
         OAuth2Response oAuth2Response = null;
 
@@ -53,8 +53,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProviderId();
         String email = oAuth2Response.getEmail();
         String name = oAuth2Response.getName();
-//        System.out.println(username);
+        System.out.println(username);
         tokenService.setAccessToken(username);
+
+//        String user = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+//        System.out.println("user: " + user);
 
         UserEntity existData = userRepository.findByUsername(username);
 
@@ -65,10 +68,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .name(name)
                     .role("ROLE_USER")
                     .build();
+//            UserEntity userEntity = new UserEntity();
+//            userEntity.setUsername(username);
+//            userEntity.setEmail(email);
+//            userEntity.setName(name);
+//            userEntity.setRole("ROLE_USER");
 
             userRepository.save(userEntity);
 
-//            System.out.println(userRepository);
+            System.out.println(userRepository);
 
             UserDTO userDTO = UserDTO.builder()
                     .username(username)
@@ -77,6 +85,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .role("ROLE_USER")
                     .build();
 
+//            UserDTO userDTO = new UserDTO();
+//            userDTO.setUsername(username);
+//            userDTO.setEmail(oAuth2Response.getEmail());
+//            userDTO.setName(oAuth2Response.getName());
+//            userDTO.setRole("ROLE_USER");
+
             Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity, null, new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -84,7 +98,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         }else
         {
-        //lombok build를 사용하는게 편하다
+
             existData.setUsername(username);
             existData.setEmail(email);
             existData.setName(name);
@@ -97,11 +111,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .name(name)
                     .build();
 
+//            UserDTO userDTO = new UserDTO();
+//            userDTO.setUsername(existData.getUsername());
+//            userDTO.setEmail(oAuth2Response.getEmail());
+//            userDTO.setName(oAuth2Response.getName());
+//            userDTO.setRole(existData.getRole());
+
             Authentication authentication = new UsernamePasswordAuthenticationToken(existData, null, new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             return new CustomOAuth2User(userDTO);
 
         }
-    } //@RequiredArgdsConstructor 를 사용하면 편리
+
+    }
+
 }
