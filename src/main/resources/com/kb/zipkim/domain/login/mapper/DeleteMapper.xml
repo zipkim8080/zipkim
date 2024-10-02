@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.zipkim.domain.login.mapper.DeleteMapper">
+    <select id="selectToken" resultType="com.kb.zipkim.domain.login.entity.RefreshEntity">
+        SELECT *
+        FROM refreshentity
+        ORDER BY expiration ASC
+    </select>
+
+    <delete id="deleteToken">
+        DELETE FROM refreshentity WHERE id = #{id}
+    </delete>
+</mapper>

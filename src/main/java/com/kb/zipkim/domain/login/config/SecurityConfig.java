@@ -71,6 +71,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth       //경로별 인가 작업
 //                       .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/property").authenticated()
+                        .requestMatchers("/api/reissue").permitAll()
                        .anyRequest().permitAll())
 //                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
