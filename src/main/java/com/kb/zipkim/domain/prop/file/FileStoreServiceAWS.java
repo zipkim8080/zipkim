@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Profile("prod")
+//@Profile("prod")
 @RequiredArgsConstructor
 public class FileStoreServiceAWS extends FileStoreService {
 

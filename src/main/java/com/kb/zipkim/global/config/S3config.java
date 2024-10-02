@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("prod")
+//@Profile("prod")
 public class S3config {
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;

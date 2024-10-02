@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@Profile("local")
+//@Service
+//@Profile("local")
 public class FileStoreServicePC extends FileStoreService {
 
     @Value("${file.dir}")
