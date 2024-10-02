@@ -2,6 +2,7 @@ package com.kb.zipkim.domain.login.jwt;
 
 import com.kb.zipkim.domain.login.dto.CustomOAuth2User;
 import com.kb.zipkim.domain.login.dto.UserDTO;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -40,10 +41,27 @@ public class JWTFilter extends OncePerRequestFilter {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             token = bearerToken.substring(7);
         }
+
         if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
+
+        try {
+            jwtUtil.isExpired(token);
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        String category = jwtUtil.getCategory(token);
+
+        if (!category.equals("access")) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         // token에서 username과 role 획득
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
