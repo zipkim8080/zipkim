@@ -24,6 +24,14 @@ public class SimplePropInfo {
 
     private String imageUrl;
 
+    private String type;
+
+    private String hugNumber;
+
+    private String complexName;
+
+    private Boolean isFavorite;
+
     public SimplePropInfo(Property property,String imageUrl) {
         this.id = property.getId();
         this.amount = property.getAmount();
@@ -32,6 +40,10 @@ public class SimplePropInfo {
         this.detailAddress = property.getDetailAddress();
         this.description = property.getDescription();
         this.imageUrl = imageUrl;
+        this.type = property.getComplex().getType();
+        this.hugNumber = property.getHugNumber();
+        this.complexName = property.getComplex().getComplexName();
+        this.isFavorite = false;
     }
 
 }

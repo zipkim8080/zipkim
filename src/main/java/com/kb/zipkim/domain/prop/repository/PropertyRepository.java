@@ -15,6 +15,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     @Query(value = "select p from Property p " +
             "join fetch p.registered r " +
+            "join fetch p.complex c "+
             "where p.complex.id = :complexId ",
             countQuery = "select count(p.id) from Property p where p.complex.id =:complexId")
     Page<Property> findByComplexId(@Param("complexId") Long complexId, Pageable pageable);
