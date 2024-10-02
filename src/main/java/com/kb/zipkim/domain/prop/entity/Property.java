@@ -9,6 +9,7 @@ import com.kb.zipkim.domain.register.entity.Registered;
 import com.kb.zipkim.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ public class Property extends BaseEntity {
     private String porch; //현관타입
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "property")
+    @BatchSize(size = 10)
     private List<UploadFile> images = new ArrayList<>();
 
     private Integer floor; //현재층
