@@ -8,6 +8,7 @@ import com.kb.zipkim.domain.login.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -62,16 +63,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())    //csrf disable
                 .formLogin(login -> login.disable())   //From 로그인 방식 disable
                 .httpBasic(basic -> basic.disable())   //HTTP Basic 인증 방식 disable
-//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)   // JWTFilter 추가
                 .oauth2Login((oauth2) -> oauth2     //oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests((auth) -> auth       //경로별 인가 작업
-                       .requestMatchers("/").permitAll()
+//                       .requestMatchers("/").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/property").authenticated()
                        .anyRequest().permitAll())
 //                         .anyRequest().authenticated())
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .sessionManagement((session) -> session     //세션 설정 : STATELESS
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
