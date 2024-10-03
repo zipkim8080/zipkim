@@ -79,7 +79,7 @@ public class PropertyService {
         }else{
             complex = complexRepository.findByBgdCdAndMainAddressNoAndSubAddressNo(form.getBgdCd(), form.getMainAddressNo(), form.getSubAddressNo())
                     .orElseGet(()->{
-                        Complex newComplex = Complex.makeComplex(form);
+                        Complex newComplex = Complex.makeDdOrYr(form);
                         return complexRepository.save(newComplex);
                     });
         }

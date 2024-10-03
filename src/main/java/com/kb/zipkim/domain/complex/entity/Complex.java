@@ -26,8 +26,6 @@ public class Complex {
 
     private String type;
 
-    private String zipcode;
-
     private String roadName;
 
     private String bgdCd;
@@ -55,7 +53,7 @@ public class Complex {
     @OneToMany(mappedBy = "complex")    
     private List<Property> properties = new ArrayList<>();
 
-    public static Complex makeComplex(
+    public static Complex makeDdOrYr(
             PropRegisterForm form
     ) {
         Complex complex = new Complex();
@@ -63,6 +61,8 @@ public class Complex {
         complex.roadName = form.getRoadName();
         complex.bgdCd = form.getBgdCd();
         complex.addressName = form.getAddressName();
+        complex.recentDeposit = 0.0;
+        complex.recentAmount = 0.0;
         complex.mainAddressNo = form.getMainAddressNo();
         complex.subAddressNo = form.getSubAddressNo();
         complex.longitude = form.getLongitude();
