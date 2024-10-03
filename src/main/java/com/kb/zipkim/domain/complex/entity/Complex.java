@@ -102,7 +102,7 @@ public class Complex {
     }
 
     public Double calcRecentDepositRatio() {
-        if (recentAmount == 0.0) {
+        if (recentAmount == 0.0 || recentAmount ==  null || recentDeposit == null)  {
             return 0.0;
         }
         return recentDeposit / recentAmount;
