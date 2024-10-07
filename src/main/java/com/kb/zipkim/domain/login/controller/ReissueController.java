@@ -61,11 +61,12 @@ public class ReissueController {
         String role = jwtUtil.getRole(refresh);
         String email = jwtUtil.getEmail(refresh);
 
+        refreshRepository.deleteByUsername(username);
+
         // 새 jwt 발급
         String newAccess = jwtUtil.createJwt("access", username, name, role, email,1800000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, name, role, email,7200000L);
 
-        refreshRepository.deleteByRefresh(refresh);
         addRefreshEntity(username, newRefresh, 7200000L);
 
         Map<String, String> tokens = new HashMap<>();
@@ -78,10 +79,15 @@ public class ReissueController {
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
-        RefreshEntity refreshEntity = new RefreshEntity();
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setUsername(username);
-        refreshEntity.setExpiration(date.toString());
+        RefreshEntity refreshEntity = RefreshEntity.builder()
+                .refresh(refresh)
+                .username(username)
+                .expiration(date.toString())
+                .build();
+//        RefreshEntity refreshEntity = new RefreshEntity();
+//        refreshEntity.setRefresh(refresh);
+//        refreshEntity.setUsername(username);
+//        refreshEntity.setExpiration(date.toString());
 
         refreshRepository.save(refreshEntity);
     }

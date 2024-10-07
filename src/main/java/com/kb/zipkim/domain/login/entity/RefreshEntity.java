@@ -1,12 +1,13 @@
 package com.kb.zipkim.domain.login.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RefreshEntity {
 
     @Id
