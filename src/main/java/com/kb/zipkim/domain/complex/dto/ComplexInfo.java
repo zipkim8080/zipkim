@@ -15,6 +15,8 @@ public class ComplexInfo {
 
     private Long id;
 
+    private String type;
+
     private String bgdCd;
 
     private String complexName;

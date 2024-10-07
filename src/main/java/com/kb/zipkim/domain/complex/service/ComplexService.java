@@ -67,7 +67,7 @@ public class ComplexService {
                 .orElseThrow(() -> new NotFoundException("해당 단지정보가 없습니다 단지Id: " + complexId));
         List<Area> areas = areaRepository.findByComplex(findComplex);
         List<AreaInfo> areasInfo = areas.stream().map(area -> new AreaInfo(area.getId(), area.getSupplyArea(), area.getPyeongName())).collect(Collectors.toList());
-        return new ComplexInfo(findComplex.getId(), findComplex.getBgdCd(), findComplex.getComplexName(), findComplex.getRoadName(), findComplex.getRecentAmount(), findComplex.getRecentDeposit(), findComplex.getAddressName(), findComplex.getMainAddressNo(), findComplex.getSubAddressNo(),areasInfo);
+        return new ComplexInfo(findComplex.getId(),findComplex.getType(), findComplex.getBgdCd(), findComplex.getComplexName(), findComplex.getRoadName(), findComplex.getRecentAmount(), findComplex.getRecentDeposit(), findComplex.getAddressName(), findComplex.getMainAddressNo(), findComplex.getSubAddressNo(),areasInfo);
     }
 
     public List<SearchResponse> findByBgd(String bgdCd) {
