@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface DeleteMapper {
 
-    List<RefreshEntity> selectToken();
+    public List<RefreshEntity> selectToken();
 
-    void deleteToken(Long id);
+    public void deleteToken(Long id);
 }

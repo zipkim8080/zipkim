@@ -16,9 +16,15 @@ public class UserService {
         return user.getPhonenumber();
     }
 
-    public void addPhoneNumber(String username, String phoneNumber) {
+    public String getBrokerNumber(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user.getBrokerNo();
+    }
+
+    public void addPhoneNumber(String username, String phoneNumber, String brokerNumber) {
         UserEntity user = userRepository.findByUsername(username);
         user.setPhonenumber(phoneNumber);
+        user.setBrokerNo(brokerNumber);
         userRepository.save(user);
     }
 }
