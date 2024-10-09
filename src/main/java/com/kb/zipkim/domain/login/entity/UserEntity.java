@@ -27,4 +27,6 @@ public class UserEntity {
 
     private String phonenumber;
 
+    private String brokerNo;
+
 }

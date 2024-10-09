@@ -30,9 +30,10 @@ public class PhoneController {
     public ResponseEntity getPhone(HttpServletRequest request) {
         String username =jwtUtil.getUsername(request.getHeader("Authorization").substring(7));
         String phoneNumber = userService.getPhoneNumber(username);
-
-        if (phoneNumber != null) {
-            return ResponseEntity.ok(phoneNumber);
+        String brokerNumber = userService.getBrokerNumber(username);
+        if (phoneNumber != null || brokerNumber != null) {
+            PhoneNumberRequest response = new PhoneNumberRequest(phoneNumber, brokerNumber);
+            return ResponseEntity.ok(response);
         } else {
             return null;
         }
@@ -41,9 +42,10 @@ public class PhoneController {
     @PostMapping("/phone")
     public ResponseEntity<String> addPhone(@RequestBody PhoneNumberRequest phoneNumberRequest, HttpServletRequest request) {
         String phoneNumber = phoneNumberRequest.getPhoneNumber();
+        String brokerNumber = phoneNumberRequest.getBrokerNumber();
         String username =jwtUtil.getUsername(request.getHeader("Authorization").substring(7));
 //        String username = phoneNumberRequest.getUsername();
-        userService.addPhoneNumber(username, phoneNumber);
+        userService.addPhoneNumber(username, phoneNumber, brokerNumber);
         return ResponseEntity.ok("저장 성공");
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.zipkim.domain.broker.mapper.BrokerMapper">
+
+    <select id="getBroker" resultType="com.kb.zipkim.domain.broker.dto.BrokerDTO">
+        select name, broker_no as brokerNo, company_name as companyName
+        from broker
+        where name = #{name} and broker_no = #{brokerNumber}
+    </select>
+
+</mapper>

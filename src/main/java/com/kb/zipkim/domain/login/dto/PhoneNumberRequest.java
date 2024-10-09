@@ -5,19 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PhoneNumberRequest {
     private String phoneNumber;
-//    private String username;
+    private String brokerNumber;
 
     @JsonCreator
-    public PhoneNumberRequest(@JsonProperty("phoneNumber") String phoneNumber) {
+    public PhoneNumberRequest(@JsonProperty("phoneNumber") String phoneNumber,
+                              @JsonProperty("brokerNumber") String brokerNumber) {
         this.phoneNumber = phoneNumber;
-//        this.username = username;
+        this.brokerNumber = brokerNumber;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-//    public String getUsername() {
-//        return username;
-//    }
+    public String getBrokerNumber() { return brokerNumber; }
+
 }
