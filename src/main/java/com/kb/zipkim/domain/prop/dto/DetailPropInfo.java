@@ -21,7 +21,7 @@ public class DetailPropInfo {
 
     private Long brokerId;
 
-    private String brokerPhone;
+    private String brokerNo;
 
     private String phoneNumber;
 
@@ -69,7 +69,7 @@ public class DetailPropInfo {
         return DetailPropInfo.builder()
                 .id(property.getId())
                 .brokerId(property.getBroker().getId())
-                .brokerPhone(property.getBroker().getPhonenumber())
+                .brokerNo(property.getBroker().getBrokerNo())
                 .phoneNumber(property.getBroker().getPhonenumber())
                 .name(property.getBroker().getName())
                 .address(property.getComplex().getAddressName())
