@@ -25,6 +25,12 @@ public class UserService {
         UserEntity user = userRepository.findByUsername(username);
         user.setPhonenumber(phoneNumber);
         user.setBrokerNo(brokerNumber);
+        user.setRole("ROLE_BROKER");
         userRepository.save(user);
+    }
+
+    public String getRole(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user.getRole();
     }
 }
