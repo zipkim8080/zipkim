@@ -1,8 +1,7 @@
 package com.kb.zipkim.domain.bookMark.controller;
 
+
 import com.kb.zipkim.domain.bookMark.dto.BookMarkRequest;
-import com.kb.zipkim.domain.bookMark.entity.BookMark;
-import com.kb.zipkim.domain.bookMark.repository.BookMarkRepository;
 import com.kb.zipkim.domain.bookMark.serevice.BookMarkService;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
@@ -13,25 +12,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/apis")
-public class BookMarkController {
+public class BookMarkAddController {
 
     @Autowired
-    private BookMarkRepository bookMarkRepository;
+    private BookMarkService bookMarkService;
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/searchDB", method = {RequestMethod.POST, RequestMethod.GET})
-    public ResponseEntity<?> searchData(@RequestBody BookMarkRequest bookMarkRequest) {
+    public BookMarkAddController(BookMarkService bookMarkService) {
+        this.bookMarkService = bookMarkService;
+    }
+    @RequestMapping(value = "/addDB", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> addBookMark(@RequestBody(required = false) BookMarkRequest bookMarkRequest) {
         String username = bookMarkRequest.getUsername();
+        String probid = bookMarkRequest.getProbid();
+        String deposit = bookMarkRequest.getDeposit();
+        String amount = bookMarkRequest.getAmount();
+        String floor = bookMarkRequest.getFloor();
+        String image = bookMarkRequest.getImage();
+
         UserEntity user = userRepository.findByUsername(username);
-        List<BookMark> bookMarks = bookMarkRepository.findByUser(user);
-        if(!bookMarks.isEmpty()) {
-            return ResponseEntity.ok(bookMarks);
-        }
-        return ResponseEntity.notFound().build();
+
+        bookMarkService.addbookmark(user, probid, deposit, amount, floor, image);
+        return ResponseEntity.ok("저장 성공");
     }
 }
