@@ -3,16 +3,13 @@ package com.kb.zipkim.domain.bookMark.entity;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.prop.entity.Property;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.awt.print.Book;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 public class BookMark {
 
     @Id
@@ -23,18 +20,13 @@ public class BookMark {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    private String probid;
-
-    private String deposit;
-
-    private String amount;
-
-    private String floor;
-
-    private String image;
-
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prop_id")
-    private Property property;*/
+    private Property property;
 
+    @Builder
+    public BookMark(UserEntity user, Property property) {
+        this.user = user;
+        this.property = property;
+    }
 }

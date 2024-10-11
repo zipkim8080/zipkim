@@ -1,69 +1,72 @@
 package com.kb.zipkim.domain.bookMark.serevice;
 
-import com.amazonaws.services.kms.model.NotFoundException;
 import com.kb.zipkim.domain.bookMark.entity.BookMark;
 import com.kb.zipkim.domain.bookMark.repository.BookMarkRepository;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
+import com.kb.zipkim.domain.prop.dto.SimplePropInfo;
 import com.kb.zipkim.domain.prop.entity.Property;
+import com.kb.zipkim.domain.prop.file.FileStoreService;
+import com.kb.zipkim.domain.prop.file.UploadFile;
 import com.kb.zipkim.domain.prop.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-/*@Transactional(readOnly = true)
-@RequiredArgsConstructor*/
+@RequiredArgsConstructor
 public class BookMarkService {
 
     private final BookMarkRepository bookMarkRepository;
     private final UserRepository userRepository;
+    private final PropertyRepository propertyRepository;
+    private final FileStoreService fileStoreService;
 
-    public BookMarkService(BookMarkRepository bookMarkRepository, UserRepository userRepository) {
-        this.bookMarkRepository = bookMarkRepository;
-        this.userRepository = userRepository;
+    @Transactional
+    public void addBookMark(String username, Long propertyId) {
+        UserEntity user = userRepository.findByUsername(username);
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new IllegalArgumentException("Property not found"));
+        bookMarkRepository.findByUserAndProperty(user, property).ifPresent(bookmark -> { throw new IllegalArgumentException("Bookmark already exists"); });
+        BookMark bookMark = BookMark.builder()
+                .user(user)
+                .property(property)
+                .build();
+        bookMarkRepository.save(bookMark);
     }
 
-    public void addbookmark(UserEntity user, String probid, String desopit, String amount, String floor, String image) {
-        BookMark savedBookmark = bookMarkRepository.findByUserAndProbid(user, probid);
-        if (savedBookmark != null) {
-            bookMarkRepository.delete(savedBookmark);
-            System.out.println("즐겨찾기 삭제" + probid);
-        } else {
-            BookMark bookmark = new BookMark();
-            bookmark.setUser(user);
-            bookmark.setProbid(probid);
-            bookmark.setDeposit(desopit);
-            bookmark.setAmount(amount);
-            bookmark.setFloor(floor);
-            bookmark.setImage(image);
-            bookMarkRepository.save(bookmark);
-            System.out.println("즐겨찾기 저장" + probid);
-        }
+    @Transactional
+    public void deleteBookMark(String username, Long propertyId) {
+        UserEntity user = userRepository.findByUsername(username);
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new IllegalArgumentException("Property not found"));
+        BookMark bookMark = bookMarkRepository.findByUserAndProperty(user, property).orElseThrow(() -> new IllegalArgumentException("Bookmark does not exist"));
+        bookMarkRepository.delete(bookMark);
     }
 
-    public boolean deleteItem(Long itemId) {
-        Optional<BookMark> item = bookMarkRepository.findById(itemId);
-        if (item.isPresent()) {
-            bookMarkRepository.delete(item.get());
-            return true;
-        }
-        return false;
+    public boolean hasBookMark(String username, Long propertyId) {
+        UserEntity user = userRepository.findByUsername(username);
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new IllegalArgumentException("Property not found"));
+        return bookMarkRepository.findByUserAndProperty(user, property).isPresent();
     }
-    public boolean updateItem(Long itemId, String info) {
-        Optional<BookMark> item = bookMarkRepository.findById(itemId);
 
-        if(item.isPresent()) {
-            BookMark existingItem = item.get();
-            existingItem.setProbid(info);
-            bookMarkRepository.save(existingItem);
-            return true;
-        } else {
-            return false;
+    public Page<SimplePropInfo> getList(String username, Pageable pageable) {
+        UserEntity user = userRepository.findByUsername(username);
+
+        Page<BookMark> bookMarks = bookMarkRepository.findByUser(user,pageable);
+        List<SimplePropInfo> list = new ArrayList<>();
+        for (BookMark bookMark : bookMarks) {
+            Property property = bookMark.getProperty();
+            List<UploadFile> images = property.getImages();
+            String imageUrl = !images.isEmpty()? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+            list.add(new SimplePropInfo(property,imageUrl));
         }
+        return new PageImpl<>(list,pageable,bookMarks.getTotalElements());
     }
 }
