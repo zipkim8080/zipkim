@@ -32,7 +32,7 @@ public class SimplePropInfo {
 
     private Boolean isFavorite;
 
-    public SimplePropInfo(Property property,String imageUrl) {
+    public SimplePropInfo(Property property,String imageUrl,boolean isFavorite) {
         this.id = property.getId();
         this.amount = property.getAmount();
         this.deposit = property.getDeposit();
@@ -43,7 +43,7 @@ public class SimplePropInfo {
         this.type = property.getComplex().getType();
         this.hugNumber = property.getHugNumber();
         this.complexName = property.getComplex().getComplexName();
-        this.isFavorite = false;
+        this.isFavorite = isFavorite;
     }
 
 }

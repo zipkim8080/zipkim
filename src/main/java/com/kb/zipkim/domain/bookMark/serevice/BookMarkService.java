@@ -65,7 +65,7 @@ public class BookMarkService {
             Property property = bookMark.getProperty();
             List<UploadFile> images = property.getImages();
             String imageUrl = !images.isEmpty()? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
-            list.add(new SimplePropInfo(property,imageUrl));
+            list.add(new SimplePropInfo(property,imageUrl,true ));
         }
         return new PageImpl<>(list,pageable,bookMarks.getTotalElements());
     }

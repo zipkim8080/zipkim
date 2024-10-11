@@ -1,6 +1,8 @@
 package com.kb.zipkim.domain.prop.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.kb.zipkim.domain.bookMark.repository.BookMarkRepository;
+import com.kb.zipkim.domain.login.dto.CustomOAuth2User;
 import com.kb.zipkim.domain.login.entity.UserEntity;
 import com.kb.zipkim.domain.login.repository.UserRepository;
 import com.kb.zipkim.domain.prop.dto.*;
@@ -35,6 +37,8 @@ public class PropertyService {
     private final ComplexPropQueryRepository complexPropQueryRepository;
     private final RegisteredRepository registeredRepository;
     private final UserRepository userRepository;
+    private final BookMarkRepository bookMarkRepository;
+
     @Transactional
     public RegisterResult registerProp(PropRegisterForm form,String username) throws IOException {
         List<UploadFile> uploadFiles = fileStoreService.storeFiles(form.getImages());
@@ -86,13 +90,18 @@ public class PropertyService {
         return complex;
     }
 
-    public Page<SimplePropInfo> findPropList(Long complexId, Pageable pageable) {
+    public Page<SimplePropInfo> findPropList(Long complexId, CustomOAuth2User user, Pageable pageable) {
         Page<Property> findProps = propertyRepository.findByComplexId(complexId, pageable);
         List<SimplePropInfo> simplePropInfos = new ArrayList<>();
         for (Property findProp : findProps) {
             List<UploadFile> images = findProp.getImages();
             String imageUrl = !images.isEmpty()? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
-            simplePropInfos.add(new SimplePropInfo(findProp,imageUrl));
+            boolean isFavorite = false;
+            if (user != null) {
+                UserEntity userEntity = userRepository.findByUsername(user.getUsername());
+                isFavorite = bookMarkRepository.findByUserAndProperty(userEntity, findProp).isPresent();
+            }
+            simplePropInfos.add(new SimplePropInfo(findProp,imageUrl,isFavorite));
         }
         return new PageImpl<>(simplePropInfos, pageable, findProps.getTotalElements());
     }

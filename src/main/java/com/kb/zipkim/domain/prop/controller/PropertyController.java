@@ -38,8 +38,8 @@ public class PropertyController {
 
 
     @GetMapping("/api/prop-list")
-    public Page<SimplePropInfo> PropList(@RequestParam Long complexId, Pageable pageable) {
-        return propertyService.findPropList(complexId, pageable);
+    public Page<SimplePropInfo> PropList(@RequestParam Long complexId,@AuthenticationPrincipal CustomOAuth2User user, Pageable pageable) {
+        return propertyService.findPropList(complexId,user, pageable);
     }
 
     @GetMapping("/api/prop/{id}")
