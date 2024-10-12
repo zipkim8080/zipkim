@@ -46,7 +46,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://your-amplify-domain.com"));
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://dev.d19ghcfaxxas13.amplifyapp.com"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
