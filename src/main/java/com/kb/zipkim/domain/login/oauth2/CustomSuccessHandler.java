@@ -47,6 +47,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        String host = request.getHeader("Referer");
 //        log.info("로그인시도: {}",host);
 //        getRedirectStrategy().sendRedirect(request, response, host+"redirect-uri?token="+token+"&refresh="+refresh);
+        log.info("로그인성공");
         getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/redirect-uri?token="+token+"&refresh="+refresh);
     }
 
