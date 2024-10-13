@@ -10,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
@@ -42,8 +44,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refresh = jwtUtil.createJwt("refresh", username, name, role, email,7200000L);     // Ms
 
         addRefreshEntity(username, refresh, 7200000L);
-
-        getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/redirect-uri?token="+token+"&refresh="+refresh);
+        String host = request.getHeader("Referer");
+        log.info("로그인시도: {}",host);
+        getRedirectStrategy().sendRedirect(request, response, host+"redirect-uri?token="+token+"&refresh="+refresh);
     }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
