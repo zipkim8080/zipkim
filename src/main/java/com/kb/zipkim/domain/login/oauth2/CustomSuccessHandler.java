@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -28,6 +29,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
+
+    @Value("${front.url}")
+    private String front_url;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -47,7 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String host = request.getHeader("Referer");
         log.info("로그인성공공: {}",host);
 //        getRedirectStrategy().sendRedirect(request, response, host+"redirect-uri?token="+token+"&refresh="+refresh);
-        getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/redirect-uri?token="+token+"&refresh="+refresh);
+        getRedirectStrategy().sendRedirect(request, response, front_url + "redirect-uri?token=" + token + "&refresh=" + refresh);
     }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
