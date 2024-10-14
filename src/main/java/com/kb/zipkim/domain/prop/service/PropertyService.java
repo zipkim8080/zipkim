@@ -133,4 +133,9 @@ public class PropertyService {
 
         return new PageImpl<>(list, pageable, properties.size());
     }
+
+    public void deleteProp(Long id) {
+        propertyRepository.deleteById(id);
+    }
+
 }
