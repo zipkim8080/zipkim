@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,12 @@ public class PropertyController {
     @GetMapping("/api/prop/{id}")
     public DetailPropInfo getProp(@PathVariable Long id) {
         return propertyService.findPropById(id);
+    }
+
+    @PostMapping("/api/delete/prop/{id}")
+    public ResponseEntity deleteProp(@PathVariable Long id) {
+        propertyService.deleteProp(id);
+        return ResponseEntity.ok().build();
     }
 
 }
