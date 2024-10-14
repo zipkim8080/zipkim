@@ -11,7 +11,8 @@ import java.util.List;
 
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
-    List<Property> findByBrokerId(Long brokerId);
+//    List<Property> findByBrokerId(Long brokerId);
+    Page<Property> findByBrokerId(Long brokerId, Pageable pageable);
 
     @Query(value = "select p from Property p " +
             "join fetch p.registered r " +

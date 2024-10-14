@@ -120,18 +120,34 @@ public class PropertyService {
     }
 
     public Page<SimplePropInfo> getPropertiesByBrokerId(String username, Pageable pageable) {
+//        UserEntity user = userRepository.findByUsername(username);
+//
+//        List<Property> properties = propertyRepository.findByBrokerId(user.getId());
+//
+//        List<SimplePropInfo> list = new ArrayList<>();
+//        for (Property property : properties) {
+//            List<UploadFile> images = property.getImages();
+//            String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+//            list.add(new SimplePropInfo(property, imageUrl, false));
+//        }
+//
+//        return new PageImpl<>(list, pageable, properties.size());
         UserEntity user = userRepository.findByUsername(username);
 
-        List<Property> properties = propertyRepository.findByBrokerId(user.getId());
+        // Pageable로 데이터 조회
+        Page<Property> properties = propertyRepository.findByBrokerId(user.getId(), pageable);
 
-        List<SimplePropInfo> list = new ArrayList<>();
-        for (Property property : properties) {
-            List<UploadFile> images = property.getImages();
-            String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
-            list.add(new SimplePropInfo(property, imageUrl, false));
-        }
+        // SimplePropInfo 리스트로 변환
+        List<SimplePropInfo> list = properties.stream()
+                .map(property -> {
+                    List<UploadFile> images = property.getImages();
+                    String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+                    return new SimplePropInfo(property, imageUrl, false);
+                })
+                .collect(Collectors.toList());
 
-        return new PageImpl<>(list, pageable, properties.size());
+        // Page 객체로 반환
+        return new PageImpl<>(list, pageable, properties.getTotalElements());
     }
 
     public void deleteProp(Long id) {
