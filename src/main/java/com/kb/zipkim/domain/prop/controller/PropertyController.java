@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,4 +48,9 @@ public class PropertyController {
         return propertyService.findPropById(id);
     }
 
+
+    @GetMapping("/api/myprops/{username}")
+    public Page<SimplePropInfo> getPropertiesByBrokerId(@PathVariable String username, Pageable pageable) {
+        return propertyService.getPropertiesByBrokerId(username, pageable);
+    }
 }

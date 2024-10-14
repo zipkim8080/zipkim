@@ -84,10 +84,6 @@ public class ReissueController {
                 .username(username)
                 .expiration(date.toString())
                 .build();
-//        RefreshEntity refreshEntity = new RefreshEntity();
-//        refreshEntity.setRefresh(refresh);
-//        refreshEntity.setUsername(username);
-//        refreshEntity.setExpiration(date.toString());
 
         refreshRepository.save(refreshEntity);
     }

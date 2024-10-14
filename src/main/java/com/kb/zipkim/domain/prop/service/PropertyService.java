@@ -119,4 +119,18 @@ public class PropertyService {
         return detailInfo;
     }
 
+    public Page<SimplePropInfo> getPropertiesByBrokerId(String username, Pageable pageable) {
+        UserEntity user = userRepository.findByUsername(username);
+
+        List<Property> properties = propertyRepository.findByBrokerId(user.getId());
+
+        List<SimplePropInfo> list = new ArrayList<>();
+        for (Property property : properties) {
+            List<UploadFile> images = property.getImages();
+            String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+            list.add(new SimplePropInfo(property, imageUrl, false));
+        }
+
+        return new PageImpl<>(list, pageable, properties.size());
+    }
 }

@@ -73,6 +73,7 @@ public class SecurityConfig {
 //                       .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/property").authenticated()
                         .requestMatchers("/api/bookmark/*").authenticated()
+                        .requestMatchers("/api/myprops/*").authenticated()
                         .requestMatchers("/api/reissue").permitAll()
                        .anyRequest().permitAll())
 //                         .anyRequest().authenticated())
