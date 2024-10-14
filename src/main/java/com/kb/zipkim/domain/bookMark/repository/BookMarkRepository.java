@@ -20,4 +20,8 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     Page<BookMark> findByUser(UserEntity user, Pageable pageable);
 //    BookMark findByUserAndProbid(UserEntity user, String probid);
 //    Optional<BookMark> findByIdAndUser(Long id, UserEntity user);
+
+    Optional<BookMark> findByProperty(Property property);
+
+    void deleteByProperty(Property property);
 }
