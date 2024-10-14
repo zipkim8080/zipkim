@@ -53,4 +53,11 @@ public class PropertyController {
     public Page<SimplePropInfo> getPropertiesByBrokerId(@PathVariable String username, Pageable pageable) {
         return propertyService.getPropertiesByBrokerId(username, pageable);
     }
+
+    @PostMapping("/api/delete/prop/{id}")
+    public ResponseEntity deleteProp(@PathVariable Long id) {
+        propertyService.deleteProp(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
