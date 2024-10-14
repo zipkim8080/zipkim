@@ -19,6 +19,8 @@ public class DetailPropInfo {
 
     private Long id;
 
+    private String type;
+
     private Long brokerId;
 
     private String brokerNo;
@@ -68,6 +70,7 @@ public class DetailPropInfo {
     public static DetailPropInfo toDetailPropInfo(Property property) {
         return DetailPropInfo.builder()
                 .id(property.getId())
+                .type(property.getComplex().getType())
                 .brokerId(property.getBroker().getId())
                 .brokerNo(property.getBroker().getBrokerNo())
                 .phoneNumber(property.getBroker().getPhonenumber())
