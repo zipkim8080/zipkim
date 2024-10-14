@@ -119,4 +119,7 @@ public class PropertyService {
         return detailInfo;
     }
 
+    public void deleteProp(Long id) {
+        propertyRepository.deleteById(id);
+    }
 }
