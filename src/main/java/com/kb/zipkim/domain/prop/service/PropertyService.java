@@ -135,6 +135,9 @@ public class PropertyService {
     }
 
     public void deleteProp(Long id) {
+        Property property = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 매물이 없습니다."));
+        bookMarkRepository.deleteByProperty(property);
+
         propertyRepository.deleteById(id);
     }
 
