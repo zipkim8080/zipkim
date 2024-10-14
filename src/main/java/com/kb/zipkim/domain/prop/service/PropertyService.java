@@ -119,10 +119,42 @@ public class PropertyService {
         return detailInfo;
     }
 
+    public Page<SimplePropInfo> getPropertiesByBrokerId(String username, Pageable pageable) {
+//        UserEntity user = userRepository.findByUsername(username);
+//
+//        List<Property> properties = propertyRepository.findByBrokerId(user.getId());
+//
+//        List<SimplePropInfo> list = new ArrayList<>();
+//        for (Property property : properties) {
+//            List<UploadFile> images = property.getImages();
+//            String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+//            list.add(new SimplePropInfo(property, imageUrl, false));
+//        }
+//
+//        return new PageImpl<>(list, pageable, properties.size());
+        UserEntity user = userRepository.findByUsername(username);
+
+        // Pageable로 데이터 조회
+        Page<Property> properties = propertyRepository.findByBrokerId(user.getId(), pageable);
+
+        // SimplePropInfo 리스트로 변환
+        List<SimplePropInfo> list = properties.stream()
+                .map(property -> {
+                    List<UploadFile> images = property.getImages();
+                    String imageUrl = !images.isEmpty() ? fileStoreService.getFullPath(images.get(0).getStoreFileName()) : null;
+                    return new SimplePropInfo(property, imageUrl, false);
+                })
+                .collect(Collectors.toList());
+
+        // Page 객체로 반환
+        return new PageImpl<>(list, pageable, properties.getTotalElements());
+    }
+
     public void deleteProp(Long id) {
         Property property = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 매물이 없습니다."));
         bookMarkRepository.deleteByProperty(property);
 
         propertyRepository.deleteById(id);
     }
+
 }
