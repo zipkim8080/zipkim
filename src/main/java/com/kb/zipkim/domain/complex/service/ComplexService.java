@@ -11,6 +11,7 @@ import com.kb.zipkim.domain.complex.entity.Complex;
 import com.kb.zipkim.domain.complex.repository.ComplexRepository;
 import com.kb.zipkim.domain.complex.dto.ComplexInfo;
 import com.kb.zipkim.domain.complex.dto.NearByComplex;
+import com.kb.zipkim.domain.prop.repository.ComplexPropQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
@@ -35,6 +36,9 @@ public class ComplexService {
     private final ComplexRepository complexRepository;
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final ComplexPropQueryRepository complexPropQueryRepository;
+
     public List<NearByComplex> findNearComplexes(String type, double latitude, double longitude, double radius) throws JsonProcessingException {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         GeoReference<String> reference = GeoReference.fromCoordinate(new Point(longitude, latitude));
@@ -58,6 +62,20 @@ public class ComplexService {
             }
             complex.setDistance(result.getDistance().getValue());
             complexes.add(complex);
+        }
+        return complexes;
+    }
+
+    //테스트메서드
+    public List<NearByComplex> findNearComplexesV2(String type, double latitude, double longitude, double radius) {
+        List<Complex> complexesWithin10km = complexPropQueryRepository.findComplexesWithin10km(latitude, longitude);
+        List<NearByComplex> complexes = new ArrayList<>();
+        for (Complex complex : complexesWithin10km) {
+            if (!complex.getType().equals(type) ) {
+                continue;
+            }
+            NearByComplex nearByComplex = new NearByComplex(complex.getId(),complex.getType(), complex.calcAvrDeposit(), complex.calcAvrAmount(), complex.getRecentAmount(), complex.getRecentDeposit(), complex.calcCurrentDepositRatio(), complex.calcRecentDepositRatio(), complex.getLongitude(),complex.getLatitude());
+            complexes.add(nearByComplex);
         }
         return complexes;
     }

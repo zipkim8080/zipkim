@@ -29,6 +29,13 @@ public class ComplexController {
         return Response.success(complexes);
     }
 
+    //테스트메서드
+    @GetMapping("/api/v2/map/{type}")
+    public Response<List<NearByComplex>> getNearComplexesV2(@PathVariable String type, @ModelAttribute LocationWithRadius locationWithRadius) throws JsonProcessingException {
+        List<NearByComplex> complexes = complexService.findNearComplexesV2(type, locationWithRadius.getLat(), locationWithRadius.getLon(), locationWithRadius.getRadius());
+        return Response.success(complexes);
+    }
+
     @GetMapping("/api/complex/summary")
     public ComplexInfo getComplexSummary(@RequestParam Long complexId) {
         return complexService.findWithArea(complexId);
