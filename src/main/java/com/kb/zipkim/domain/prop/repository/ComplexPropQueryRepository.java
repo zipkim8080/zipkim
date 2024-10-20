@@ -75,7 +75,7 @@ public class ComplexPropQueryRepository {
                 + "* COS(RADIANS(c.longitude) - RADIANS(:longitude)) "
                 + "+ SIN(RADIANS(:latitude)) "
                 + "* SIN(RADIANS(c.latitude)))) AS distance "
-                + "FROM Complex c "
+                + "FROM complex c "
                 + "HAVING distance <= 10 "
                 + "ORDER BY distance";
 
