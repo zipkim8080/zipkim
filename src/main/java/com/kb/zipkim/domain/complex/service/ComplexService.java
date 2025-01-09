@@ -68,7 +68,7 @@ public class ComplexService {
 
     //테스트메서드
     public List<NearByComplex> findNearComplexesV2(String type, double latitude, double longitude, double radius) {
-        List<Complex> complexesWithin10km = complexPropQueryRepository.findComplexesWithin10km(latitude, longitude);
+        List<Complex> complexesWithin10km = complexPropQueryRepository.findComplexesWithin10km(latitude, longitude,radius);
         List<NearByComplex> complexes = new ArrayList<>();
         for (Complex complex : complexesWithin10km) {
             if (!complex.getType().equals(type) ) {

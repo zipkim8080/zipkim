@@ -29,7 +29,6 @@ import static com.kb.zipkim.domain.register.entity.QRegistered.*;
 public class ComplexPropQueryRepository {
 
     private final JPAQueryFactory queryFactory;
-
     @PersistenceContext
     private EntityManager em;
 
@@ -68,7 +67,7 @@ public class ComplexPropQueryRepository {
     }
 
     //테스트메서드
-    public List<Complex> findComplexesWithin10km(double latitude, double longitude) {
+    public List<Complex> findComplexesWithin10km(double latitude, double longitude,double radius) {
         String query = "SELECT c.*, "
                 + "(6371 * ACOS(COS(RADIANS(:latitude)) "
                 + "* COS(RADIANS(c.latitude)) "
@@ -76,12 +75,13 @@ public class ComplexPropQueryRepository {
                 + "+ SIN(RADIANS(:latitude)) "
                 + "* SIN(RADIANS(c.latitude)))) AS distance "
                 + "FROM complex c "
-                + "HAVING distance <= 10 "
+                + "HAVING distance <= :radius "
                 + "ORDER BY distance";
 
         return em.createNativeQuery(query, Complex.class)
                 .setParameter("latitude", latitude)
                 .setParameter("longitude", longitude)
+                .setParameter("radius", radius)
                 .getResultList();
     }
 
