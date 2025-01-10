@@ -13,6 +13,7 @@ import com.kb.zipkim.domain.complex.dto.ComplexInfo;
 import com.kb.zipkim.domain.complex.dto.NearByComplex;
 import com.kb.zipkim.domain.prop.repository.ComplexPropQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ComplexService {
     private static final String KEY = "complexes";
 
@@ -69,6 +71,7 @@ public class ComplexService {
     //테스트메서드
     public List<NearByComplex> findNearComplexesV2(String type, double latitude, double longitude, double radius) {
         List<Complex> complexesWithin10km = complexPropQueryRepository.findComplexesWithin10km(latitude, longitude,radius);
+        log.info("radius: {}", radius);
         List<NearByComplex> complexes = new ArrayList<>();
         for (Complex complex : complexesWithin10km) {
             if (!complex.getType().equals(type) ) {
